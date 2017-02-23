@@ -11,10 +11,10 @@ import matplotlib.pyplot as plt
 import matplotlib.dates as mdate
 import datetime
 
-fileName = '20170223_124200.txt'
+filePath = 'datasets/20170223_091400.txt'
 
 data = []
-with open(fileName) as f:
+with open(filePath) as f:
     data = f.readlines()
 
 time = []
@@ -63,11 +63,13 @@ plt.xlabel('time')
 plt.ylabel('RH')
 
 # Adjust the x-axis to look nice
-fig.suptitle('Sensor Data')
+fig.suptitle('Sensor Data: {}'.format(filePath.split('.')[0].split('/')[1]))
 
 xfmt = mdate.DateFormatter('%H:%M') # this is what make the x-axis format correctly
 ax3.xaxis.set_major_formatter(xfmt)
 fig.autofmt_xdate() # This works alright
 
 # fig.tight_layout()
+
+plt.savefig("{}.png".format(filePath.split('.')[0]))
 plt.show()
