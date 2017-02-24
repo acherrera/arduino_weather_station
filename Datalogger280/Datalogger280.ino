@@ -45,9 +45,8 @@ Adafruit_BME280 bme(BME_CS, BME_MOSI, BME_MISO, BME_SCK); // software SPI for BM
 
 //TODO get ride of the Serial printing stuff on final design
 //TODO better implement the date and time methods
-//TODO in setup, create file with date and time, then use that file. This'll make it easier to
-// reuse and restart later
-
+//Maybe find better way of setting up the file system
+//TODO add light to show if it is working
 void setup() {
   // Open serial communications and wait for port to open:
   Serial.begin(9600);

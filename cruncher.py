@@ -11,8 +11,10 @@ import matplotlib.pyplot as plt
 import matplotlib.dates as mdate
 import datetime
 
+fileName = '20170223_124200.txt'
+
 data = []
-with open('20170223_091400.txt.TXT') as f:
+with open(fileName) as f:
     data = f.readlines()
 
 time = []
@@ -31,48 +33,41 @@ for line in data:
     hour = int(time_data[9:11])
     minute = int(time_data[11:13])
     second = int(time_data[13:15])
+
     time.append(datetime.datetime(year,month,day,hour,minute, second))
 
     temp.append(float(line.split(',')[1]))
     pressure.append(float(line.split(',')[2]))
     rel_hum.append(float(line.split(',')[3]))
 
-x = [i for i in range(len(temp))]
 
-fig, ax1 = plt.subplots()
-ax1.plot(time, temp, 'b-')
-ax1.set_xlabel('time (not really)')
-# Make the y-axis label, ticks and tick labels match the line color.
-ax1.set_ylabel('Temperature', color='b')
-ax1.tick_params('y', colors='b')
+# Time to get plotting
+fig = plt.figure() # This is the 'canvas' of the plot. Used later for changes
 
-ax2 = ax1.twinx()
-ax2.plot(time, rel_hum, 'r-')
-ax2.set_ylabel('Relative Humidity', color='r')
-ax2.tick_params('y', colors='r')
+# Subplot 1
+ax1 = plt.subplot(3, 1, 1)
+plt.plot(time, temp)
+plt.ylabel('Temperature')
+plt.setp(ax1.get_xticklabels(), visible=False)
 
+# Subplot 2
+ax2 = plt.subplot(3, 1, 2)
+plt.plot(time, pressure)
+plt.ylabel('Pressure')
+plt.setp(ax2.get_xticklabels(), visible=False)
 
-# This might as well be voodoo, but it works well enough.
-xfmt = mdate.DateFormatter('%H:%M:%S')
-ax1.xaxis.set_major_formatter(xfmt)
+# Subplot 3
+ax3 = plt.subplot(3, 1, 3)
+plt.plot(time, rel_hum)
+plt.xlabel('time')
+plt.ylabel('RH')
+
+# Adjust the x-axis to look nice
+fig.suptitle('Sensor Data')
+
+xfmt = mdate.DateFormatter('%H:%M') # this is what make the x-axis format correctly
+ax3.xaxis.set_major_formatter(xfmt)
 fig.autofmt_xdate() # This works alright
 
-
-
-fig.tight_layout()
+# fig.tight_layout()
 plt.show()
-
-plt.show()
-
-
-""" Dumb Anthony way of plotting data
-plt.subplot(2, 1 ,1)
-plt.plot(x, temp)
-plt.xlabel('Time - not really')
-plt.ylabel('Temp')
-
-plt.subplot(2, 1 ,2)
-plt.plot(x, pressure)
-plt.xlabel('Time - not really')
-plt.ylabel('Pressure')
-"""
