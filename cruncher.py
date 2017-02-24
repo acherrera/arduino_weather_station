@@ -12,7 +12,7 @@ import matplotlib.dates as mdate
 import datetime
 import numpy as np
 
-filePath = 'datasets/20170223_200800_sanatized.TXT'
+filePath = 'datasets/Bathroom_fan_pressure_test.TXT'
 
 data = []
 with open(filePath) as f:
