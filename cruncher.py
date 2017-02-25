@@ -3,40 +3,70 @@ Created by Anthony Herrera to analyze Arduino weather station data.
 
 """
 # TODO put lines in graph where sensor was messed with, potentially skewing results
+# TODO need an input method to select starting time and minute. Maybe not second.
 
 # Time comes in form %04d%02d%02d_%02d%02d%02d - Because I made it that way.
 # Data is of form: Time, Temperature, Pressure, Relative Humidity.
 
-import matplotlib.pyplot as plt
-import matplotlib.dates as mdate
 import datetime
+import time
+
+import matplotlib.dates as mdate
+import matplotlib.pyplot as plt
 import numpy as np
 
-filePath = 'datasets/Bathroom_fan_pressure_test.TXT'
+from Modules.helpers import get_start
 
-data = []
+filePath = 'datasets/20170225_214000_fridge_data.TXT'
+
 with open(filePath) as f:
     data = f.readlines()
 
-time = []
+time_list = []
 temp = []
 pressure = []
 rel_hum = []
 
 # Sea Level Correction
-elevation = 288 # m
-gravity = 9.80665 #m/s^2
+elevation = 288  # m
+gravity = 9.80665  # m/s^2
 R = 287
 
-def to_Kelin(T):
+
+def to_Kelvin(T):
     return T + 273.15
 
-start_hour = int(input("What is the starting hour? (e.g. '15') Zero for all times:"))
-if start_hour > 24 or start_hour < 1:
-    start_hour = 0
+
+current_time = datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d-%H-%M-%S').split('-')
+year_current = int(current_time[0])
+month_current = int(current_time[1])
+day_current = int(current_time[2])
+hour_current = int(current_time[3])
+minute_current = int(current_time[4])
+
+# second_current = current_time[5]
+
+year_start = get_start("Year", year_current)
+month_start = get_start("Month", month_current)
+day_start = get_start("Day", day_current)
+hour_start = get_start("Hour", hour_current)
+minute_start = get_start("Minute", minute_current)
+second_start = 0
+
+# This will check if the current time and the start time match. Overwrites current time - whatever
+current_time = datetime.datetime(year_current, month_current, day_current, hour_current,
+                                 minute_current, 0)
+
+start_time = datetime.datetime(year_start, month_start, day_start, hour_start,
+                               minute_start, second_start)
+
+# They the two times do match, set start to time way back. Could also use a boolean and check that
+if current_time == start_time:
+    start_time = datetime.datetime(2000, 1, 1, 1, 1, 1)
+
+print("Start time is: {}".format(start_time))
 
 for line in data:
-
 
     time_data = str(line.split(',')[0])
     year = int(time_data[0:4])
@@ -46,51 +76,54 @@ for line in data:
     minute = int(time_data[11:13])
     second = int(time_data[13:15])
 
-    if hour >= start_hour:
-
-        time.append(datetime.datetime(year,month,day,hour,minute, second))
+    in_time = datetime.datetime(year, month, day, hour, minute, second)
+    # These are datetime object comparison
+    if in_time > start_time:
+        time_list.append(in_time)
         temperature = float(line.split(',')[1])
         temp.append(temperature)
         input_pressure = float(line.split(',')[2])
-        corrected_pressure = input_pressure*np.exp((elevation*gravity)/(R*to_Kelin(temperature)))
+        corrected_pressure = input_pressure * np.exp((elevation * gravity) / (R * to_Kelvin(temperature)))
         pressure.append(corrected_pressure)
         rel_hum.append(float(line.split(',')[3]))
 
+if len(time_list) < 3:
+    print("Please check starting times\nProgram Exiting")
+    quit()
 
 # Time to get plotting
-fig = plt.figure() # This is the 'canvas' of the plot. Used later for changes
+fig = plt.figure()  # This is the 'canvas' of the plot. Used later for changes
 
 # Subplot 1
 ax1 = plt.subplot(3, 1, 1)
-plt.plot(time, temp)
+plt.plot(time_list, temp)
 plt.ylabel('Temperature (C)')
 plt.setp(ax1.get_xticklabels(), visible=False)
 
 # Subplot 2
 ax2 = plt.subplot(3, 1, 2)
-plt.plot(time, pressure)
+plt.plot(time_list, pressure)
 plt.ylabel('Pressure (hPa)')
 plt.setp(ax2.get_xticklabels(), visible=False)
 
-
 # Subplot 3
 ax3 = plt.subplot(3, 1, 3)
-plt.plot(time, rel_hum)
+plt.plot(time_list, rel_hum)
 plt.xlabel('Time')
 plt.ylabel('RH (%)')
 
 # use to add text to figure image
 # fig.text(0, 0, 'Note the spikes around 1am appear to be from hail hitting the box. Not likely to be\n'
-             #'due to wind as the inconsistency coincides with reported hail')
+# 'due to wind as the inconsistency coincides with reported hail')
 
 # Adjust the x-axis to look nice
 fig.suptitle('Sensor Data: {}'.format(filePath.split('.')[0].split('/')[1]))
 
-xfmt = mdate.DateFormatter('%H:%M') # this is what make the x-axis format correctly
+xfmt = mdate.DateFormatter('%H:%M')  # this is what make the x-axis format correctly
 ax3.xaxis.set_major_formatter(xfmt)
-fig.autofmt_xdate() # This works alright
+fig.autofmt_xdate()  # This works alright
 
-#fig.tight_layout()
+# fig.tight_layout()
 
 plt.savefig("{}.png".format(filePath.split('.')[0]))
 plt.show()
