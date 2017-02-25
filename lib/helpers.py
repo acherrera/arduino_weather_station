@@ -1,3 +1,8 @@
+# TODO expand the get_start so the it does it all on its own
+# TODO see temp.py for better method to get current time
+
+
+# Rewrite this to return a datetime object of the tim that was entered
 def get_start(item, default):
     """
     :param item: String name of item to set: e.g. "Year" or "Day"
@@ -25,3 +30,18 @@ def get_start(item, default):
         print("Assuming current {}: {}".format(item, default))
         output = default
     return output
+
+
+def three_plot(x, y1, y2, y3, title, ylabel1, ylabel2, ylabel3):
+    """
+    Create this functions
+    :param x:
+    :param y1:
+    :param y2:
+    :param y3:
+    :param title:
+    :param ylabel1:
+    :param ylabel2:
+    :param ylabel3:
+    :return:
+    """
