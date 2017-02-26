@@ -2,6 +2,11 @@
 Contains files pertaining to the building of a home made weather station. Will be used for a 
 school project comparing homemade to professional grade measurements.
 
+# Project Outline
+The project can be broken down into two three separate sections. These are the ATMega (Arduino) programming,
+the hardware and wiring, and the processing of data. The Arduino programming is done in C; technically a modified C
+for Arduino. The data is processed in Python language. 
+
 # Project Notes
 
 ## Physical Build issues
@@ -51,6 +56,12 @@ These are:
 in so that errors can be addressed.
 
 * Plotting Mode: Output the variables so a Python program and live plot the variables being measured. 
+
+# Version 2.0
+The next big step will be to move the board from the Arduino and breadboard to a perm-proto board. Ideally, the ATMega would stand
+alone with various 'life-support' systems added on. This would serve to decrease the size of the system and allow more testing
+to be carried out on the Arduino while the systems is working on its oh.
+
 
 # Other Interesting Links
 Home made sonic anemometer: https://soldernerd.com/arduino-ultrasonic-anemometer/
