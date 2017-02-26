@@ -1,3 +1,7 @@
+
+# Data taken over a long period of time. Demonstrates the ability of the sensor to fail, restart and continue
+# Taking data with obvious differences in time. i.e. the plotting can compensate for different times of data collection
+
 20170223_124344,7.63,970.94,78.76
 20170223_124345,7.71,970.88,78.88
 20170223_124346,7.73,970.90,78.97

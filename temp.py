@@ -1,12 +1,5 @@
-import datetime
-import time
+from lib.helpers import get_start
 
-# Testing better implementation of the current time function. This works well.
-current_time = datetime.datetime.fromtimestamp(time.time())
+start = get_start()
 
-year = current_time.year
-month = current_time.month
-day = current_time.day
-
-print(type(day))
-print(day)
+print(start)

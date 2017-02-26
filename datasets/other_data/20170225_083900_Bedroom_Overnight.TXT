@@ -1,3 +1,7 @@
+
+#  Trends overnight. High pressure system moving in. Heater finally kicks on in the morning. Possible correlation
+# Between heater and realtive humidity.
+
 20170224_214606,16.40,977.23,61.50
 20170224_214607,16.44,977.29,61.04
 20170224_214608,16.37,977.34,59.19

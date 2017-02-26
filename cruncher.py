@@ -6,12 +6,12 @@ Created by Anthony Herrera to analyze Arduino weather station data.
 # TODO need an input method to select starting time and minute. Maybe not second.
 # TODO add temperature conversion availability. Need to update graph axis labels
 # TODO modulurize
+# TODO add functionality for end time
 
 # Time comes in form %04d%02d%02d_%02d%02d%02d - Because I made it that way.
 # Data is of form: Time, Temperature, Pressure, Relative Humidity.
 
 import datetime
-import time
 
 import matplotlib.dates as mdate
 import matplotlib.pyplot as plt
@@ -19,7 +19,7 @@ import numpy as np
 
 from lib.helpers import get_start
 
-filePath = 'datasets/20170225_083900_Bedroom_Overnight.TXT'
+filePath = 'datasets/testing_data/Program_testing_data.txt'
 
 with open(filePath) as f:
     data = f.readlines()
@@ -39,40 +39,15 @@ def to_Kelvin(T):
     return T + 273.15
 
 
-# Better implement this, see temp.py. Make all of this it's own function that returns datetime object. Till 71
-current_time = datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d-%H-%M-%S').split('-')
-year_current = int(current_time[0])
-month_current = int(current_time[1])
-day_current = int(current_time[2])
-hour_current = int(current_time[3])
-minute_current = int(current_time[4])
-
-
-year_start = get_start("Year", year_current)
-month_start = get_start("Month", month_current)
-day_start = get_start("Day", day_current)
-hour_start = get_start("Hour", hour_current)
-minute_start = get_start("Minute", minute_current)
-second_start = 0
-
-# This will check if the current time and the start time match. Overwrites current time - whatever
-current_time = datetime.datetime(year_current, month_current, day_current, hour_current,
-                                 minute_current, 0)
-
-start_time = datetime.datetime(year_start, month_start, day_start, hour_start,
-                               minute_start, second_start)
-
-# They the two times do match, set start to time way back. Could also use a boolean and check that
-if current_time == start_time:
-    print("Graphing All Data")
-    start_time = datetime.datetime(2000, 1, 1, 1, 1, 1)
+start_time = get_start()
 
 print("Start time is: {}".format(start_time))
 
 # Possible make this it's own thing too
 for line in data:
 
-    if line.startswith('#'):  # test if this work. Add comment to file
+    # Ignores comments or new lines
+    if line.startswith('#') or line == '\n':
         pass
     else:
         time_data = str(line.split(',')[0])
@@ -134,5 +109,3 @@ fig.autofmt_xdate()  # This works alright
 
 plt.savefig("{}.png".format(filePath.split('.')[0]))
 plt.show()
-
-print(pressure[-1])

@@ -1,3 +1,6 @@
+
+# Sensor was left outside. Evidence of slight drying after snow/hail storm. High pressure is moving in
+
 20170224_061420,3.09,966.64,95.61
 20170224_061421,3.08,966.63,95.28
 20170224_061422,3.05,966.61,94.88

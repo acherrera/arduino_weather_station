@@ -1,3 +1,7 @@
+
+# Threw the sensor in the fridge. Not terribly interesting. Long time to get to steady state - not good. Working
+# On fixing this issue
+
 20170224_202527,22.83,976.23,45.79
 20170224_202528,22.83,976.24,45.99
 20170224_202529,22.84,976.26,46.86

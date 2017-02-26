@@ -1,3 +1,6 @@
+
+# Just looking at apartment temperature. Insulation seems to be pretty good. High Pressure System moving in
+
 20170224_145003,20.40,971.24,53.38
 20170224_145004,20.41,971.23,53.01
 20170224_145005,20.41,971.28,52.54

@@ -11,6 +11,9 @@ by the sensor from the rest of the sensing equipments. This is a small error, bu
 the data from expected. "Bathroom_fan_pressure_test" is a good example as the station had 
 be brought inside minutes before the fan pressure test and it had yet to reach steady state. 
 
+Will attempt to fix this by mounting the sensor on a small standoff above 
+or to the side of the board. Will test before and after for results
+
 ## Things to do
 ### Make Single Program with Options
 Make a single program to process all different standard types of data. 
@@ -21,6 +24,14 @@ Options to graph include:
 * choose to save graph
 * enter variable name (temperature, pressure, humidity)
 * choose start and end times
+
+### Issue Relating to the Code Base
+Working to modularize the program to make the main program easier to understand 
+and aid in fixing issues later. 
+ 
+The graphing methods will be broken down into several separate section for ease
+of calling later. This will allow the options to be shortened down to one single line 
+of code and call
 
 ### Use Python to Live Plot Data
 The Arduino has the ability to send data out and the computer can take this data 

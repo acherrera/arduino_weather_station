@@ -1,3 +1,7 @@
+
+# Testing the bathroom fan for pressure changes. Possible pressure drop. Sensor had just come in from outside:
+# long steady state response of temperature unit is obvious in this graph.
+
 20170224_141943,9.94,970.93,96.16
 20170224_141944,9.98,970.98,95.83
 20170224_141945,10.01,970.92,95.38

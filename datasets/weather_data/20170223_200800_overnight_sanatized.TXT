@@ -1,3 +1,8 @@
+
+# Sensor left out overnight. Hail hit station around 1am, causing large jumps in the pressure.
+# Sensor was checked multiple time resulting in bizzare temperature changes before 2200.
+# Data sanitized to remove large temperature change due to indoor/outdoors temperature difference
+
 20170223_142101,11.62,969.15,62.57
 20170223_142102,11.64,969.15,62.57
 20170223_142103,11.61,969.15,62.62
