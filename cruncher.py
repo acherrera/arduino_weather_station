@@ -19,7 +19,7 @@ import numpy as np
 
 from lib.helpers import get_start
 
-filePath = 'datasets/testing_data/Program_testing_data.txt'
+filePath = 'datasets/weather_data/20170226_000000_morning_weather.TXT'
 
 with open(filePath) as f:
     data = f.readlines()
@@ -38,8 +38,10 @@ R = 287
 def to_Kelvin(T):
     return T + 273.15
 
+sample_line = data[0]
+time_data = str(sample_line.split(',')[0])
 
-start_time = get_start()
+start_time = get_start(time_data)
 
 print("Start time is: {}".format(start_time))
 

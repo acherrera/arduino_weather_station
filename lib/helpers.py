@@ -10,12 +10,20 @@ import time
 # TODO see temp.py for better method to get current time
 
 
-def get_start():
+def get_start(sample_time):
     """
     :param item: String name of item to set: e.g. "Year" or "Day"
     :param default: Default value for item to take
     :return: Returns integer of input or default value
     """
+
+    # This should return the starting time of the data, rather than the current time
+
+    year_current = int(sample_time[0:4])
+    month_current = int(sample_time[4:6])
+    day_current = int(sample_time[6:8])
+    hour_current = int(sample_time[9:11])
+    minute_current = int(sample_time[11:13])
 
     def get_data(item, default):
         """
@@ -24,20 +32,9 @@ def get_start():
         try:
             output = int(input("\nEnter start {}: ".format(item)))
         except ValueError:
-            print("Assuming current {}: {}".format(item, default))
+            print("Assuming data start {}: {}".format(item, default))
             output = default
         return output
-
-    # Get the current time
-    current_time = datetime.datetime.fromtimestamp(time.time())
-
-    # Use  the current time to set the year and such.
-    # Unfortunately have to do this due to an issue with the seconds and having to rebuild datetime and compare later
-    year_current = int(current_time.year)
-    month_current = int(current_time.month)
-    day_current = int(current_time.day)
-    hour_current = int(current_time.hour)
-    minute_current = int(current_time.minute)
 
     # Get the start time information
     year_start = get_data("Year", year_current)
@@ -45,10 +42,8 @@ def get_start():
     day_start = get_data("Day", day_current)
     hour_start = get_data("Hour", hour_current)
     minute_start = get_data("Minute", minute_current)
-    second_start = 0
 
     # Have to rebuild the current time. Otherwrise, the second would not match due to the method in which the
-    # current time is got, the second don't match.... maddeningly.
     current_time = datetime.datetime(year_current, month_current, day_current, hour_current,
                                      minute_current, 0)
 
