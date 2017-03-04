@@ -6,6 +6,7 @@ import matplotlib.dates as mdate
 import matplotlib.pyplot as plt
 
 
+# This is the basic plot - finished. Only one that is currently finished and in use
 def three_plots(x, y1, y2, y3, title, xlabel, ylabel1, ylabel2, ylabel3, save_file):
     """
     Made three subplots for the data
@@ -55,6 +56,7 @@ def three_plots(x, y1, y2, y3, title, xlabel, ylabel1, ylabel2, ylabel3, save_fi
     plt.show()
 
 
+# Not finished - see official vs unofficial data comparison for example of this type
 def overlay_two(x, y1, y2, title, ylabel1, ylabel2, save_file=False):
     """
 

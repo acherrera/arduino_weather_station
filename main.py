@@ -1,6 +1,9 @@
 """
 Created by Anthony Herrera to analyze Arduino weather station data.
 
+WHEN RUN: will need to hit enter in the command prompt area and/or set the desired starting time. Program
+will wait until you tell it when you want it to start. Keep hitting enter to start at start time of data.
+
 """
 # TODO put lines in graph where sensor was messed with, potentially skewing results
 # TODO add temperature conversion availability. Need to update graph axis labels
@@ -10,6 +13,7 @@ Created by Anthony Herrera to analyze Arduino weather station data.
 
 # Time comes in form %04d%02d%02d_%02d%02d%02d - Because I made it that way.
 # Data is of form: Time, Temperature, Pressure, Relative Humidity.
+
 
 from modules.functions import get_start, get_data, data_start
 from modules.graph_options import three_plots

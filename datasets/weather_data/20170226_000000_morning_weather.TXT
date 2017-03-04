@@ -1,3 +1,8 @@
+
+# Good example of flaws in the first version of the sensor. Strange fluctuations in the temperature in the morning
+# likely due to radiation from the sun and its interaction with the environment. Rapid cooling in the afternoon
+# likely due to the sensor going into shade and no longer being heated. Get
+
 20170226_070220,20.59,976.58,31.76
 20170226_070221,20.51,976.53,31.57
 20170226_070222,20.49,976.58,31.45

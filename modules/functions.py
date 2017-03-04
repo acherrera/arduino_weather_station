@@ -1,5 +1,7 @@
 """
 FOR FINAL AND FRAMEWORK FUNCTIONS ONLY. Use temp.py to test new functions.
+This file contains helpers for the main file. Make main file cleaner and allows these parts to be
+used elsewhere without issue.
 """
 
 import datetime
@@ -15,7 +17,7 @@ def data_start(fileName, lines_scanned):
     Get the starting time of the data without loading all the data
     :param fileName: path to file
     :param lines_scanned: number of lines to scan. If errors occuring, check for large comments and headers
-    :return: returns a compacted date_time strong
+    :return: returns a compacted date_time string
     """
     with open(fileName) as f:
         # Gets top 20 lines to look for first non-comment line
@@ -28,12 +30,22 @@ def data_start(fileName, lines_scanned):
         else:
             sample_line = line
             break
+
+    # The first element of the CSV variable is the time. Returns a string
     return sample_line.split(',')[0]
 
 
 def get_start(data_start_time):
-    # This should return the starting time of the data, rather than the current time
+    """
+    This will ask the user for the time they want the graph the start. If nothing is entered - will assume
+    start of data as start of graph. Use to get rid of transient temperature change - for example, when the
+    sensor is place outside after being inside for a long period of time.
 
+    :param data_start_time: data start as found by data_start() function
+    :return: returns the time that the graph should start according to user input as datetime object
+    """
+
+    # This is ugly because the datetime is passed as string.
     year_data_start = int(data_start_time[0:4])
     month_data_start = int(data_start_time[4:6])
     day_data_start = int(data_start_time[6:8])
@@ -64,7 +76,8 @@ def get_start(data_start_time):
 
 def get_data(filepath, start_time):
     """
-    Get the data and return each list
+    Function that actually gets the data and returns the lists of data to be plotted later
+
     :param filepath: String of path to file.
     :param start_time: Time to start the graph. Use get_start to find this value
     :return: reutns time, temperature, pressure, relative humidity as large lists
