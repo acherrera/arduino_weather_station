@@ -16,7 +16,7 @@ will wait until you tell it when you want it to start. Keep hitting enter to sta
 
 
 from modules.functions import get_start, get_data, data_start
-from modules.graph_options import three_plots
+import matplotlib.pyplot as plt
 
 the_file = 'datasets/other_data/20170225_Car_Ride_Home.TXT'
 
@@ -35,10 +35,20 @@ if len(time) < 3:
     quit()
 
 # With data, create save path and title to give the functions
-save_path = "{}.png".format(the_file.split('.')[0])
-title = 'Sensor Data: {}'.format(the_file.split('.')[0].split('/')[2])
+save_path = "{} - temperature.png".format(the_file.split('.')[0])
+title = 'Temperature for: {}'.format(the_file.split('.')[0].split('/')[2])
 
 # This is the makes the three plots
+
+plt.plot(time, temperature)
+plt.title(title)
+plt.xlabel('time')
+plt.ylabel('temperature (C)')
+plt.savefig(save_path)
+plt.show()
+
+
+""" Variables used in main program to plot
 three_plots(x=time,
             y1=temperature,
             y2=pressure,
@@ -49,3 +59,4 @@ three_plots(x=time,
             ylabel2='Pressure (hPa)',
             ylabel3='RH (%)',
             save_file=save_path)
+"""

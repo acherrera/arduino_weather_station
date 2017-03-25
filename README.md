@@ -23,39 +23,15 @@ Will attempt to fix this by mounting the sensor on a small standoff above
 or to the side of the board. Will test before and after for results
 
 ## Things to do
-### Make Single Program with Options
-Make a single program to process all different standard types of data. 
-May need to break up program in modules for more clear operation. 
 
-Options to graph include: 
-* choose variables to graph
-* choose to save graph
-* enter variable name (temperature, pressure, humidity)
-* choose start and end times
+Working on limiting the scope of the project. Example: do not need to have
+every possible option included to make this work. 
 
-### Issue Relating to the Code Base
-Working to modularize the program to make the main program easier to understand 
-and aid in fixing issues later. 
- 
-The graphing methods will be broken down into several separate section for ease
-of calling later. This will allow the options to be shortened down to one single line 
-of code and call
+### Make file to plot single varible
 
-### Use Python to Live Plot Data
-The Arduino has the ability to send data out and the computer can take this data 
-and live plot it. This would be useful in simple experiments with the systems such as temperature response
-
-### Test Alternative Arduino Sketches
-There are a few other Arduino sketches that can be built and tested for usability. 
-
-These are:
-* Max speed read - no delays and use millis() instead of the building date and time
-
-* Live Plotting Mode: Output the variables so a Python program and live plot the variables being measured. 
-
-# Version 2.0
-The next step is miniaturizing and making more permanent. Current set up is large and relatively
-expensive. 
+This should be easy - make a temperature only graph
+                    - make a pressure only graph
+                    - make a humidity only graph
 
 # Other Interesting Links
 Home made sonic anemometer: https://soldernerd.com/arduino-ultrasonic-anemometer/

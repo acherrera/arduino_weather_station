@@ -1,5 +1,7 @@
 """
-This is a script that will
+This is a script that will plot ASOS data vs recorded data. 
+ASOS data file goes under "official_file"
+Recorded data goes under "unofficial_file"
 """
 import datetime
 
