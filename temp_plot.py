@@ -18,7 +18,7 @@ will wait until you tell it when you want it to start. Keep hitting enter to sta
 from modules.functions import get_start, get_data, data_start
 import matplotlib.pyplot as plt
 
-the_file = 'datasets/other_data/20170225_Car_Ride_Home.TXT'
+the_file = 'datasets/testing_data/20170325_Response_Testing.TXT'
 
 lines_to_scan = 40  # lines to scan for the first non-comment line
 
