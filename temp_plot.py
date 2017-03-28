@@ -1,22 +1,13 @@
 """
 Created by Anthony Herrera to analyze Arduino weather station data.
 
-WHEN RUN: will need to hit enter in the command prompt area and/or set the desired starting time. Program
-will wait until you tell it when you want it to start. Keep hitting enter to start at start time of data.
+This is just made to plot the temperature variable
 
 """
-# TODO put lines in graph where sensor was messed with, potentially skewing results
-# TODO add temperature conversion availability. Need to update graph axis labels
-# TODO add functionality for end time
-# TODO make it an option to skip the 'start_time' option below
-
-
-# Time comes in form %04d%02d%02d_%02d%02d%02d - Because I made it that way.
-# Data is of form: Time, Temperature, Pressure, Relative Humidity.
-
 
 from modules.functions import get_start, get_data, data_start
 import matplotlib.pyplot as plt
+import matplotlib.dates as mdate
 
 the_file = 'datasets/testing_data/20170325_Response_Testing.TXT'
 
@@ -35,15 +26,23 @@ if len(time) < 3:
     quit()
 
 # With data, create save path and title to give the functions
-save_path = "{} - temperature.png".format(the_file.split('.')[0])
-title = 'Temperature for: {}'.format(the_file.split('.')[0].split('/')[2])
+save_path = "{}_temperature.png".format(the_file.split('.')[0])
+title_string = 'Temperature for: {}'.format(the_file.split('.')[0].split('/')[2])
 
 # This is the makes the three plots
 
-plt.plot(time, temperature)
-plt.title(title)
+fig = plt.figure()
+ax1 = plt.subplot(1, 1, 1)
+
+ax1.plot(time, temperature)
+plt.title(title_string)
 plt.xlabel('time')
 plt.ylabel('temperature (C)')
+
+xfmt = mdate.DateFormatter('%H:%M')
+ax1.xaxis.set_major_formatter(xfmt)
+fig.autofmt_xdate()
+
 plt.savefig(save_path)
 plt.show()
 

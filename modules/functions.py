@@ -52,7 +52,14 @@ def get_start(data_start_time):
     hour_data_start = int(data_start_time[9:11])
     minute_data_start = int(data_start_time[11:13])
 
+
     def get_data(item, default):
+        """
+        Helper function that is used to get all the starting times below
+        :param item:
+        :param default:
+        :return:
+        """
         try:
             output = int(input("\nEnter start {}: ".format(item)))
         except ValueError:
@@ -60,16 +67,29 @@ def get_start(data_start_time):
             output = default
         return output
 
-    # Get the start time information use get_data defined above
-    year_start = get_data("Year", year_data_start)
-    month_start = get_data("Month", month_data_start)
-    day_start = get_data("Day", day_data_start)
-    hour_start = get_data("Hour", hour_data_start)
-    minute_start = get_data("Minute", minute_data_start)
+    # See if user even wants to enter data start time
+    custom_start = input('Would you like to enter custom start time? [Y/n]')
 
-    # Build the datetime object for the current time
-    start_time = datetime.datetime(year_start, month_start, day_start, hour_start,
+    if str.upper(custom_start) == 'Y':
+        custom_start = True
+    else:
+        custom_start = False
+
+
+    if custom_start == True:
+        # Get the start time information use get_data defined above
+        year_start = get_data("Year", year_data_start)
+        month_start = get_data("Month", month_data_start)
+        day_start = get_data("Day", day_data_start)
+        hour_start = get_data("Hour", hour_data_start)
+        minute_start = get_data("Minute", minute_data_start)
+
+        # Build the datetime object for the current time
+        start_time = datetime.datetime(year_start, month_start, day_start, hour_start,
                                    minute_start, 0)
+    else:
+        start_time = datetime.datetime(year_data_start, month_data_start, day_data_start,
+                                        hour_data_start, minute_data_start, 0)
 
     return start_time
 
