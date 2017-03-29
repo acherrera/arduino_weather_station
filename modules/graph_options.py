@@ -55,6 +55,24 @@ def three_plots(x, y1, y2, y3, title, xlabel, ylabel1, ylabel2, ylabel3, save_fi
     plt.savefig(save_file)
     plt.show()
 
+def single_plot(x, y, title, xlabel, ylabel, save_file):
+    fig = plt.figure()
+    ax1 = plt.subplot(1, 1, 1)
+
+    ax1.plot(x, y)
+    plt.title(title)
+    plt.xlabel(xlabel)
+    plt.ylabel(ylabel)
+
+    xfmt = mdate.DateFormatter('%H:%M')
+    ax1.xaxis.set_major_formatter(xfmt)
+    fig.autofmt_xdate()
+
+    plt.savefig(save_file)
+    plt.show()
+
+
+
 
 # Not finished - see official vs unofficial data comparison for example of this type
 def overlay_two(x, y1, y2, title, ylabel1, ylabel2, save_file=False):
@@ -85,7 +103,7 @@ def histogram(data, bins, title, ylabel, save_file=False):
 
 def correlation_histogram(x, y, title, xlabel, ylabel, save_file=False):
     """
-
+    2D historgram chart
     :param x:
     :param y:
     :param title:
@@ -98,7 +116,7 @@ def correlation_histogram(x, y, title, xlabel, ylabel, save_file=False):
 
 def correlation_scatter(x, y, title, xlabel, ylabel):
     """
-
+    2D scatter plot with trend line possibly
     :param x:
     :param y:
     :param title:

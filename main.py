@@ -17,6 +17,7 @@ will wait until you tell it when you want it to start. Keep hitting enter to sta
 
 from modules.functions import get_start, get_data, data_start
 from modules.graph_options import three_plots
+from modules.menus import *
 
 the_file = 'datasets/other_data/20170225_Car_Ride_Home.TXT'
 
@@ -30,6 +31,7 @@ print("Start time is: {}".format(start_time))
 
 time, temperature, pressure, rel_hum = get_data(the_file, start_time)
 
+# this checks to make sure there is something to output
 if len(time) < 3:
     print("Please check starting times\nProgram Exiting")
     quit()

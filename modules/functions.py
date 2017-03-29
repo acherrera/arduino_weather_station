@@ -5,7 +5,6 @@ used elsewhere without issue.
 """
 
 import datetime
-
 import numpy as np
 
 

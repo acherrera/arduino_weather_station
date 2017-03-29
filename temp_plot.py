@@ -8,6 +8,7 @@ This is just made to plot the temperature variable
 from modules.functions import get_start, get_data, data_start
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdate
+from modules.graph_options import single_plot
 
 the_file = 'datasets/testing_data/20170325_Response_Testing.TXT'
 
@@ -29,33 +30,7 @@ if len(time) < 3:
 save_path = "{}_temperature.png".format(the_file.split('.')[0])
 title_string = 'Temperature for: {}'.format(the_file.split('.')[0].split('/')[2])
 
-# This is the makes the three plots
+# This takes care of the plotting automatically
+single_plot(time, temperature, title_string, 'time', 'temperature(C)',
+        save_path)
 
-fig = plt.figure()
-ax1 = plt.subplot(1, 1, 1)
-
-ax1.plot(time, temperature)
-plt.title(title_string)
-plt.xlabel('time')
-plt.ylabel('temperature (C)')
-
-xfmt = mdate.DateFormatter('%H:%M')
-ax1.xaxis.set_major_formatter(xfmt)
-fig.autofmt_xdate()
-
-plt.savefig(save_path)
-plt.show()
-
-
-""" Variables used in main program to plot
-three_plots(x=time,
-            y1=temperature,
-            y2=pressure,
-            y3=rel_hum,
-            title=title,
-            xlabel='time',
-            ylabel1='Temperature (C)',
-            ylabel2='Pressure (hPa)',
-            ylabel3='RH (%)',
-            save_file=save_path)
-"""
