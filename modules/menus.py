@@ -11,6 +11,7 @@ def menu_maker(in_list):
     """
     exit = False
     while not exit:
+        print("\n\n")
         n = 1
         for item in in_list:
             print("{}. \t {}".format(n, item[0]))
@@ -22,10 +23,8 @@ def menu_maker(in_list):
                 user_output = in_list[user_selection][1]
                 exit = True
             else:
-                print("Please enter a valid number\n\n")
+                print("Please enter a valid number")
         except:
-            print("Please enter a valid number\n\n")
-    print("User chose: {}".format(user_selection+1))
-    print("User Ouput: {}".format(user_output))
+            print("Please enter a valid number")
     return user_output
 
