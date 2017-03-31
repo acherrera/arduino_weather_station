@@ -5,25 +5,41 @@ WHEN RUN: will need to hit enter in the command prompt area and/or set the desir
 will wait until you tell it when you want it to start. Keep hitting enter to start at start time of data.
 
 """
-# TODO put lines in graph where sensor was messed with, potentially skewing results
+
 # TODO add temperature conversion availability. Need to update graph axis labels
 # TODO add functionality for end time
-# TODO make it an option to skip the 'start_time' option below
 
 
 # Time comes in form %04d%02d%02d_%02d%02d%02d - Because I made it that way.
 # Data is of form: Time, Temperature, Pressure, Relative Humidity.
 
 
-from modules.functions import get_start, get_data, data_start
+#===================== Importing Modules============================
+
+import tkinter as tk
+from tkinter import filedialog
+from modules.functions import *
 from modules.graph_options import *
 from modules.menus import *
 
+plt.style.use('seaborn-notebook')
+
+
+# =================== All the file handling ==========================
+
 # File location
-the_file = 'datasets/other_data/20170225_Car_Ride_Home.TXT'
+
+
+the_file ="/home/tony/Centered/weather_station" \
+        "/datasets/testing_data/Response2/20170329_Response_Test.TXT"
+
+
+""" This is for VIM file finding. Ignore if not using VIM
+/home/tony/Centered/weather_station/datasets/testing_data/Response2/20170329_Response_Test.TXT
+"""
 
 # Number of lines to scan for first non-commented line. Use to get the data
-# start time
+# start time and allow for comments at the beginning of files
 lines_to_scan = 40
 data_start = data_start(the_file, lines_to_scan)
 
@@ -43,7 +59,10 @@ if len(time) < 3:
     quit()
 
 
-# Plotting Menu. Get user input for plotting
+
+# ========== Plotting Menu. Get user input for plotting ===============
+
+# Could add options for different graph layouts. 
 plot_options = [("Temperature", 1),
                 ("Pressure", 2),
                 ("Relative Humidity", 3),
@@ -51,29 +70,36 @@ plot_options = [("Temperature", 1),
 
 user_selection = menu_maker(plot_options)
 
+""" Calm down! Same thing repeated over and over
+    save_place
+    title
+    plotting stuff
+"""
 if user_selection == 1:
     save_path = "{}_temperature.png".format(the_file.split('.')[0])
-    title_string = 'Temperature for: {}'.format(the_file.split('.')[0].split('/')[2])
+    title_string = 'Temperature for:' \
+        '{}'.format(the_file.split('.')[0].split('/')[-1])
     single_plot(time, temperature, title_string, 'time', 'temperature(C)', save_path)
 
 
 elif user_selection == 2:
     save_path = "{}_pressure.png".format(the_file.split('.')[0])
-    title_string = 'pressure for: {}'.format(the_file.split('.')[0].split('/')[2])
+    title_string = 'pressure for:'\
+        '{}'.format(the_file.split('.')[0].split('/')[-1])
     single_plot(time, pressure, title_string, 'time', 'pressure(hPa)', save_path)
 
 elif user_selection == 3:
     save_path = "{}_RH.png".format(the_file.split('.')[0])
-    title_string = 'RH for: {}'.format(the_file.split('.')[0].split('/')[2])
+    title_string = 'RH for: {}'.format(the_file.split('.')[0].split('/')[-1])
     single_plot(time, rel_hum, title_string, 'time', 'Relavitve Humidity', save_path)
 
 elif user_selection == 4:
 
     # With data, create save path and title to give the functions
     save_path = "{}_all.png".format(the_file.split('.')[0])
-    title = 'All Data: {}'.format(the_file.split('.')[0].split('/')[2])
+    title = 'All Data: {}'.format(the_file.split('.')[0].split('/')[-1])
 
-    # This is the makes the three plots
+    # This monster makes the three plots
     three_plots(x=time,
                 y1=temperature,
                 y2=pressure,
