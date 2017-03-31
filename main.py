@@ -33,9 +33,11 @@ plt.style.use('seaborn-notebook')
 the_file ="/home/tony/Centered/weather_station" \
         "/datasets/testing_data/Response2/20170329_Response_Test.TXT"
 
+print("\n")
+print("File name is: {}".format(the_file.split('/')[-1]))
 
 """ This is for VIM file finding. Ignore if not using VIM
-/home/tony/Centered/weather_station/datasets/testing_data/Response2/20170329_Response_Test.TXT
+/home/tony/Centered/weather_station/datasets/testing_data/Response4/20170330_Response_test.txt
 """
 
 # Number of lines to scan for first non-commented line. Use to get the data
