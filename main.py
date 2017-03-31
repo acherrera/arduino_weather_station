@@ -27,34 +27,26 @@ plt.style.use('seaborn-notebook')
 
 # =================== All the file handling ==========================
 
-# File location
-
+# File location from user using pretty GUI
 root = tk.Tk()
 root.withdraw()
-file_name = filedialog.askopenfile()
-
+raw_path = filedialog.askopenfile()
 root.destroy()
 
-the_file = file_name.name
+# This is needed to make the file path work correctly
+file_path = raw_path.name
 
-"""
-the_file ="/home/tony/Centered/weather_station" \
-        "/datasets/testing_data/Response3/20170329_Response_test2.txt"
-"""
-
+# Make sure the filename looks correct
 print("\n")
-print("File name is: {}".format(the_file.split('/')[-1]))
+print("File name is: {}".format(file_path.split('/')[-1]))
 
-""" This is for VIM file finding. Ignore if not using VIM
-/home/tony/Centered/weather_station/datasets/testing_data/Response3/20170329_Response_test2.txt
-"""
 
 # Number of lines to scan for first non-commented line. Use to get the data
 # start time and allow for comments at the beginning of files
 lines_to_scan = 40
-data_start = data_start(the_file, lines_to_scan)
+data_start = data_start(file_path, lines_to_scan)
 
-# Import function that runs through and get information from user. See modules
+# Imported function that runs through and get information from user. See modules
 # file for more information
 start_time = get_start(data_start)
 
@@ -62,7 +54,7 @@ print("Start time is: {}".format(start_time))
 
 # get_data is in moldules/functions.py file. This is what extracts the
 # data given the input file
-time, temperature, pressure, rel_hum = get_data(the_file, start_time)
+time, temperature, pressure, rel_hum = get_data(file_path, start_time)
 
 # this checks to make sure there is something to output
 if len(time) < 3:
@@ -87,28 +79,28 @@ user_selection = menu_maker(plot_options)
     plotting stuff
 """
 if user_selection == 1:
-    save_path = "{}_temperature.png".format(the_file.split('.')[0])
+    save_path = "{}_temperature.png".format(file_path.split('.')[0])
     title_string = 'Temperature for:' \
-        '{}'.format(the_file.split('.')[0].split('/')[-1])
+        '{}'.format(file_path.split('.')[0].split('/')[-1])
     single_plot(time, temperature, title_string, 'time', 'temperature(C)', save_path)
 
 
 elif user_selection == 2:
-    save_path = "{}_pressure.png".format(the_file.split('.')[0])
+    save_path = "{}_pressure.png".format(file_path.split('.')[0])
     title_string = 'pressure for:'\
-        '{}'.format(the_file.split('.')[0].split('/')[-1])
+        '{}'.format(file_path.split('.')[0].split('/')[-1])
     single_plot(time, pressure, title_string, 'time', 'pressure(hPa)', save_path)
 
 elif user_selection == 3:
-    save_path = "{}_RH.png".format(the_file.split('.')[0])
-    title_string = 'RH for: {}'.format(the_file.split('.')[0].split('/')[-1])
+    save_path = "{}_RH.png".format(file_path.split('.')[0])
+    title_string = 'RH for: {}'.format(file_path.split('.')[0].split('/')[-1])
     single_plot(time, rel_hum, title_string, 'time', 'Relavitve Humidity', save_path)
 
 elif user_selection == 4:
 
     # With data, create save path and title to give the functions
-    save_path = "{}_all.png".format(the_file.split('.')[0])
-    title = 'All Data: {}'.format(the_file.split('.')[0].split('/')[-1])
+    save_path = "{}_all.png".format(file_path.split('.')[0])
+    title = 'All Data: {}'.format(file_path.split('.')[0].split('/')[-1])
 
     # This monster makes the three plots
     three_plots(x=time,
