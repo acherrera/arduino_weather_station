@@ -29,9 +29,18 @@ plt.style.use('seaborn-notebook')
 
 # File location
 
+root = tk.Tk()
+root.withdraw()
+file_name = filedialog.askopenfile()
 
+root.destroy()
+
+the_file = file_name.name
+
+"""
 the_file ="/home/tony/Centered/weather_station" \
         "/datasets/testing_data/Response3/20170329_Response_test2.txt"
+"""
 
 print("\n")
 print("File name is: {}".format(the_file.split('/')[-1]))
@@ -112,3 +121,5 @@ elif user_selection == 4:
                 ylabel2='Pressure (hPa)',
                 ylabel3='RH (%)',
                 save_file=save_path)
+
+
