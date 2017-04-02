@@ -1,18 +1,32 @@
 """
-This is a script that will plot ASOS data vs recorded data. 
+This is a script that will plot ASOS data vs recorded data.
 ASOS data file goes under "official_file"
 Recorded data goes under "unofficial_file"
 """
-import datetime
 
+import tkinter as tk
+from tkinter import filedialog
+
+import datetime
 import matplotlib.dates as mdate
 import matplotlib.pyplot as plt
 
 from modules.functions import get_start, get_data, data_start
 
+
+# ===================== ASOS file handling =========================
+
+input("Next Screen is the official file input - any key to continue")
+
 # This file has to be downloaded as a CSV file to work
-official_file = 'datasets/weather_data/20170226_official_data.py'
-lines_scanned = 40
+# File location from user using pretty GUI
+root = tk.Tk()                      # make it
+root.withdraw()                     # how to
+raw_path = filedialog.askopenfile() # what to
+root.destroy()                      # get rid of
+
+# This is needed to make the file path work correctly
+official_file = raw_path.name
 
 # Opens file and gets data out of it
 with open(official_file) as f:
@@ -29,6 +43,8 @@ for line in data:
 
 # Top line is just a header - remove it and save it reference if needed
 header = raw_data.pop(0)
+
+print(header)
 
 # Defining emptys lists to be used later to add data
 station = []
@@ -56,7 +72,6 @@ for line in raw_data:
 
     data_adder(sample[0], station)
     time = sample[1]  # this is indexing odd.
-    print(time)
     data_adder(sample[2], temperature)
     data_adder(sample[3], dew_point)
     data_adder(sample[4], rel_hum)
@@ -84,8 +99,21 @@ for i in range(len(temperature)):
         plot_variable.append((float(temperature[i]) - 32) / 1.8)
         plot_times.append(times[i])
 
-# From here down, essentially same as main, except plotting in handled in file rather than imported
-unofficial_file = 'datasets/weather_data/20170226_000000_morning_weather.TXT'
+
+
+# ================= Unofficial File Handling ==================
+
+input("Next Screen is the unofficial file input - any key to continue")
+
+# This file has to be downloaded as a CSV file to work
+# File location from user using pretty GUI
+root = tk.Tk()                      # make it
+root.withdraw()                     # how to
+raw_path = filedialog.askopenfile() # what to
+root.destroy()                      # get rid of
+
+# This is needed to make the file path work correctly
+unofficial_file = raw_path.name
 
 lines_to_scan = 40  # lines to scan for the first non-comment line
 
@@ -97,12 +125,9 @@ print("Start time is: {}".format(start_time))
 
 time, temperature, pressure, rel_hum = get_data(unofficial_file, start_time)
 
-if len(time) < 3:
-    print("Please check starting times\nProgram Exiting")
-    quit()
 
 # With data, create save path and title to give the functions
-save_path = "{}.png".format(unofficial_file.split('.')[0])
+save_path = "{}_comparison.png".format(unofficial_file.split('.')[0])
 title = 'Sensor Data: {}'.format(unofficial_file.split('.')[0].split('/')[2])
 
 fig = plt.figure()  # This is the 'canvas' of the plot. Used later for changes
@@ -118,8 +143,9 @@ ax1.xaxis.set_major_formatter(xfmt)
 fig.autofmt_xdate()
 
 plt.title('Homemade vs Official Data Comparison')
-plt.ylabel('Temperature')
+plt.ylabel('Temperature(C)')
 plt.xlabel('Time (Hour:Minutes)')
 
 plt.legend()
+plt.savefig(save_path)
 plt.show()
