@@ -30,6 +30,8 @@ plt.style.use('seaborn-notebook')
 
 # =================== All the file handling ==========================
 
+input("Choose .txt to use for data - press any key to continue")
+
 # File location from user using pretty GUI
 root = tk.Tk()                      # make it
 root.withdraw()                     # how to

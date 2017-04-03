@@ -44,8 +44,6 @@ for line in data:
 # Top line is just a header - remove it and save it reference if needed
 header = raw_data.pop(0)
 
-print(header)
-
 # Defining emptys lists to be used later to add data
 station = []
 time = []
@@ -128,7 +126,9 @@ time, temperature, pressure, rel_hum = get_data(unofficial_file, start_time)
 
 # With data, create save path and title to give the functions
 save_path = "{}_comparison.png".format(unofficial_file.split('.')[0])
-title = 'Sensor Data: {}'.format(unofficial_file.split('.')[0].split('/')[2])
+title = 'Data Comparison:' \
+        '{}'.format(unofficial_file.split('.')[0].split('/')[-1])
+        
 
 fig = plt.figure()  # This is the 'canvas' of the plot. Used later for changes
 
@@ -142,7 +142,7 @@ xfmt = mdate.DateFormatter('%H:%M')
 ax1.xaxis.set_major_formatter(xfmt)
 fig.autofmt_xdate()
 
-plt.title('Homemade vs Official Data Comparison')
+plt.title(title)
 plt.ylabel('Temperature(C)')
 plt.xlabel('Time (Hour:Minutes)')
 
