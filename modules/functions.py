@@ -8,8 +8,6 @@ import datetime
 import numpy as np
 
 
-# TODO expand the get_start so the it does it all on its own
-# TODO see test.py for better method to get current time
 
 def data_start(fileName, lines_scanned):
     """
@@ -54,6 +52,7 @@ def get_start(data_start_time):
 
     def get_data(item, default):
         """
+        NOTE: poor naming here, not the same as get_data below
         Helper function that is used to get all the starting times below
         :param item:
         :param default:
@@ -142,3 +141,68 @@ def get_data(filepath, start_time):
                 rel_hum_list.append(float(line.split(',')[3]))
 
     return time_list, temperature_list, pressure_list, rel_hum_list
+
+
+def parse_ASOS(filepath):
+
+    # ============== File opening and cleaning ==================
+    # Opens file and gets data out of it
+    with open(filepath) as f:
+        data = f.readlines()
+
+    # 'Cleans' the data to remove comments and other information
+    raw_data = []
+    for line in data:
+        # Take out tops line if they are not a comment or blank
+        if line.startswith('#') or line == '\n':
+            pass
+        else:
+            raw_data.append(line)
+
+    # Top line is just a header - remove it and save it reference if needed
+    header = raw_data.pop(0)
+
+    # ================== Data Parsing ================================
+
+    # Defining emptys lists to be used later to add data
+    station = []
+    temperature = []
+    dew_point = []
+    rel_hum = []
+    dirct = []
+    times = []
+
+
+    # Quick function that inserts None if data is missing - lots of missing data in files.
+    def data_adder(item, parent_list):
+        if item == 'M':
+            parent_list.append(None)
+        else:
+            parent_list.append(item)
+
+
+    # For each line, add the variables to the appropriate list
+    for line in raw_data:
+        sample = line.split(',')  # Turns into list - makes the parsing messy because of indexing
+
+        data_adder(sample[0], station)
+        time = sample[1]  # this is indexing odd.
+        data_adder(sample[2], temperature)
+        data_adder(sample[3], dew_point)
+        data_adder(sample[4], rel_hum)
+        data_adder(sample[5], dirct)
+
+        # create time variable to create datetime object
+        YMD = time.split(' ')[0].split('-')
+        HM = time.split(' ')[1].split(':')
+        Year = (int(YMD[0]))
+        Month = (int(YMD[1]))
+        Day = (int(YMD[2]))
+        Hour = (int(HM[0]))
+        Minute = (int(HM[1]))
+
+        times.append(datetime.datetime(Year, Month, Day, Hour, Minute, 0))
+
+
+    return times, temperature, dew_point, rel_hum, dirct
+

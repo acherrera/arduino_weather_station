@@ -149,5 +149,3 @@ elif user_selection == 5:
                 ylabel2='Pressure (hPa)',
                 ylabel3='RH (%)',
                 save_file=save_path)
-
-

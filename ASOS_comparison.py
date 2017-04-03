@@ -1,7 +1,5 @@
 """
 This is a script that will plot ASOS data vs recorded data.
-ASOS data file goes under "official_file"
-Recorded data goes under "unofficial_file"
 """
 
 import tkinter as tk
@@ -11,12 +9,12 @@ import datetime
 import matplotlib.dates as mdate
 import matplotlib.pyplot as plt
 
-from modules.functions import get_start, get_data, data_start
-
+from modules.functions import *
+from modules.menus import *
 
 # ===================== ASOS file handling =========================
 
-input("Next Screen is the official file input - any key to continue")
+input("\nNext Screen is the official file input - any key to continue")
 
 # This file has to be downloaded as a CSV file to work
 # File location from user using pretty GUI
@@ -28,65 +26,14 @@ root.destroy()                      # get rid of
 # This is needed to make the file path work correctly
 official_file = raw_path.name
 
-# Opens file and gets data out of it
-with open(official_file) as f:
-    data = f.readlines()
-
-# 'Cleans' the data to remove comments and other information
-raw_data = []
-for line in data:
-    # Take out tops line if they are not a comment or blank
-    if line.startswith('#') or line == '\n':
-        pass
-    else:
-        raw_data.append(line)
-
-# Top line is just a header - remove it and save it reference if needed
-header = raw_data.pop(0)
-
-# Defining emptys lists to be used later to add data
-station = []
-time = []
-temperature = []
-dew_point = []
-rel_hum = []
-dirct = []
-
-times = []
-
-
-# Quick function that inserts None if data is missing - lots of missing data in files.
-# Actually does nothing but thought it might make graphing work better later - it doesn't
-def data_adder(item, parent_list):
-    if item == 'M':
-        parent_list.append(None)
-    else:
-        parent_list.append(item)
-
-
-# For each line, add the variables to the appropriate list
-for line in raw_data:
-    sample = line.split(',')  # Turns into list - makes the parsing messy because of indexing
-
-    data_adder(sample[0], station)
-    time = sample[1]  # this is indexing odd.
-    data_adder(sample[2], temperature)
-    data_adder(sample[3], dew_point)
-    data_adder(sample[4], rel_hum)
-    data_adder(sample[5], dirct)
-
-    YMD = time.split(' ')[0].split('-')
-    HM = time.split(' ')[1].split(':')
-    Year = (int(YMD[0]))
-    Month = (int(YMD[1]))
-    Day = (int(YMD[2]))
-    Hour = (int(HM[0]))
-    Minute = (int(HM[1]))
-
-    times.append(datetime.datetime(Year, Month, Day, Hour, Minute, 0))
+# One line to hide lots of code needed to parse data out
+times, temperature, dew_point, rel_hum, dirct = parse_ASOS(official_file)
 
 # Because of all missing data, have to remove missing data before plotting. Could leave missing data
 # as 'M' but already have it replaced with None type, so I'm leaving it for now
+
+# =========================== Menu for what to plot =====================
+
 plot_times = []
 plot_variable = []
 
@@ -128,7 +75,6 @@ time, temperature, pressure, rel_hum = get_data(unofficial_file, start_time)
 save_path = "{}_comparison.png".format(unofficial_file.split('.')[0])
 title = 'Data Comparison:' \
         '{}'.format(unofficial_file.split('.')[0].split('/')[-1])
-        
 
 fig = plt.figure()  # This is the 'canvas' of the plot. Used later for changes
 
