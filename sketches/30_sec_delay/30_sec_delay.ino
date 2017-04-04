@@ -82,7 +82,7 @@ void setup() {
 void loop() {
   // one second delay in readings. Could be faster but... meh.
 
-  delay(1000); //this is the write time
+  delay(30000); //this is the write time in ms - here is 30 seconds
   digitalWrite(led, LOW);
 
   // make a string for assembling the data to log:
