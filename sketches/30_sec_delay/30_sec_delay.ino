@@ -1,6 +1,6 @@
+
 /*
 Combining date logger and BME 280 chip. This should get and log data
-
 TODO need to get the LED to stop when card is pulled out. 
 */
 
@@ -20,7 +20,6 @@ TODO need to get the LED to stop when card is pulled out.
 #define SEALEVELPRESSURE_HPA (1013.25)
 
 int led = 2;
-int led_blink;
 const int chipSelect = 10; // for datalogger
 RTC_DS1307 rtc; //for time information
 char daysOfTheWeek[7][12] = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
@@ -74,17 +73,16 @@ void setup() {
   }
 }
 
-
 //Create the correct file
 
-
-
 void loop() {
-  // one second delay in readings. Could be faster but... meh.
 
-  delay(30000); //this is the write time in ms - here is 30 seconds
+  // 10 second delay in readings.
+  digitalWrite(led, HIGH);
+  delay (1000); // keep LED on for one second before turning off
   digitalWrite(led, LOW);
-
+  delay(9000);
+  
   // make a string for assembling the data to log:
   DateTime now = rtc.now(); //For time Logging
   String dataString = "";
@@ -111,16 +109,9 @@ void loop() {
   File dataFile = SD.open("Datalog.txt", FILE_WRITE);
 
   if (dataFile) {
-    if (led_blink > 10) {
-      // this is just to make sure that it is sill working
-      digitalWrite(led, HIGH);
-      led_blink = 0;
-    }
-    led_blink += 1;
     dataFile.println(dataString);
     dataFile.close();
     Serial.println(dataString); // mainly for testing
-
   }
   // if the file isn't open, pop up an error:
   // No idea why this part doesn't work correctly.
@@ -134,11 +125,3 @@ void loop() {
     Serial.println("error opening file");
   }
 }
-
-
-
-
-
-
-
-
