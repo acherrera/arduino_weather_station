@@ -159,19 +159,25 @@ def parse_ASOS(filepath):
         else:
             raw_data.append(line)
 
-    # Top line is just a header - remove it and save it reference if needed
-    header = raw_data.pop(0)
+    # Top line is just a header - remove it and save it for reference if needed
+    header = raw_data.pop(0).split(',') # saves this as a list
+
 
     # ================== Data Parsing ================================
 
     # Defining emptys lists to be used later to add data
-    station = []
-    temperature = []
-    dew_point = []
-    rel_hum = []
-    dirct = []
-    times = []
+    # many, many more potential varialbes could be plotted
+    """
+    station,valid,tmpf, dwpf, relh, drct, sknt, p01i, alti, mslp, vsby, gust, skyc1, skyc2, skyc3, skyc4, skyl1, skyl2, skyl3, skyl4, presentwx, metar
+    """
 
+    valid = []
+    station = []
+    tempf = []
+    dwpf = []
+    relh = []
+    dirct = []
+    mslp = []
 
     # Quick function that inserts None if data is missing - lots of missing data in files.
     def data_adder(item, parent_list):
@@ -183,14 +189,18 @@ def parse_ASOS(filepath):
 
     # For each line, add the variables to the appropriate list
     for line in raw_data:
+
+        # sample is just a list version of the line
         sample = line.split(',')  # Turns into list - makes the parsing messy because of indexing
 
+
         data_adder(sample[0], station)
-        time = sample[1]  # this is indexing odd.
-        data_adder(sample[2], temperature)
-        data_adder(sample[3], dew_point)
-        data_adder(sample[4], rel_hum)
+        time = sample[1]  # this indexing is odd
+        data_adder(sample[2], tempf)
+        data_adder(sample[3], dwpf)
+        data_adder(sample[4], relh)
         data_adder(sample[5], dirct)
+        data_adder(sample[9], mslp)
 
         # create time variable to create datetime object
         YMD = time.split(' ')[0].split('-')
@@ -201,8 +211,28 @@ def parse_ASOS(filepath):
         Hour = (int(HM[0]))
         Minute = (int(HM[1]))
 
-        times.append(datetime.datetime(Year, Month, Day, Hour, Minute, 0))
+        valid.append(datetime.datetime(Year, Month, Day, Hour, Minute, 0))
 
 
-    return times, temperature, dew_point, rel_hum, dirct
+    return valid, tempf, dwpf, relh, dirct, mslp
+
+
+def pair_ASOS(times_in, variable_in):
+    """
+    Fuction takes the two variables and check to make sure that the variable
+    assosciated with the time matches
+    """
+    plot_times = []
+    plot_variable = []
+
+    # runs through the list by index rather than actual value so when it
+    # comes back with a value, both the valua and associated time can be added to the list
+
+    for i in range(len(variable_in)):
+        if variable_in[i] is not None:
+            plot_variable.append(float(variable_in[i]))
+            plot_times.append(times_in[i])
+
+    return plot_times, plot_variable
+
 

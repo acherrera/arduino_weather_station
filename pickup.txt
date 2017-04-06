@@ -1,0 +1,6 @@
+# Notes to leave to myself about where I am on programming. 
+
+20170406:   Working on getting the ASOS data to plot sea level pressure.
+            Functions.py has been upated, need to integrate into
+            ASOS_plotting.py and main.py. Compare to sea level reduced pressure
+            data from sensor
