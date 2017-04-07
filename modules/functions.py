@@ -214,13 +214,13 @@ def parse_ASOS(filepath):
         valid.append(datetime.datetime(Year, Month, Day, Hour, Minute, 0))
 
 
-    return valid, tempf, dwpf, relh, dirct, mslp
+    return station, valid, tempf, dwpf, relh, dirct, mslp
 
 
 def pair_ASOS(times_in, variable_in):
     """
     Fuction takes the two variables and check to make sure that the variable
-    assosciated with the time matches
+    assosciated with the time is not empty
     """
     plot_times = []
     plot_variable = []

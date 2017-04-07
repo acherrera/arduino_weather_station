@@ -60,27 +60,8 @@ print("Start time is: {}".format(start_time))
 
 # get_data is in moldules/functions.py file. This is what extracts the
 # data given the input file
+
 time, temperature, pressure, rel_hum = get_data(file_path, start_time)
-
-
-# ================ Reduce pressure to sea level =============
-"""         P_sl = P*exp((z*g)/(R*T))
-            P_sl: sea level pressure
-            P: station pressure
-            z: height MSL
-            g: gravity
-            R: 287
-            T: temperature in Kelvin
-
-for i in range(len(pressure)):
-    z_MSL = 288.036     # MSL of KAMW airport in meters
-    gravity = 9.81      # force of gravity
-    R_gas = 287             # gas constant
-    Temp_Kelvin = temperature[i] + 273.15
-    SL_pressure = pressure[i]*(np.exp((z_MSL*gravity)/(R_gas*Temp_Kelvin)))
-    pressure[i] = SL_pressure # change value at index to sea level pressure
-    # TESTING
-"""
 
 
 # ========== Plotting Menu. Get user input for plotting ===============
@@ -170,6 +151,7 @@ elif user_selection == 5:
 # ====================== ASOS Comparison Handling ============================
 
 elif user_selection == 6:
+    # ASOS handling
     input("\nNext Screen is the official file input - any key to continue")
 
     root = tk.Tk()                      # make it
@@ -181,8 +163,10 @@ elif user_selection == 6:
     official_file = raw_path.name
 
     # appended "_ASOS" to data names to avoid potential conflicts
-    times_ASOS, temperature_ASOS, dew_point_ASOS, rel_hum_ASOS, dirct,\
+    station_ASOS, times_ASOS, temperature_ASOS, dew_point_ASOS, rel_hum_ASOS, dirct,\
     ASOS_mslp= parse_ASOS(official_file)
+
+    station_ASOS = station_ASOS[0]
 
     print("\nASOS data loaded\nWhat would you like to compare?")
 
@@ -198,16 +182,24 @@ elif user_selection == 6:
 
     # ================== Main area for ASOS data handling =======================
 
-    if ASOS_selection == 1:
 
+
+    # ================ Defining plotting functions ==========================
+    """ 
+    Because these are used twice, they are defined here for convience.
+    Could be placed in moduls/graphing_options.py
+    """
+    def ASOS_temp_plot():
         # Temperature comparison - NOTE: ASOS data is in F
         x_plot, y_plot = pair_ASOS(times_ASOS, temperature_ASOS)
         y_plot = [((x-32)/1.8) for x in y_plot] #x is dummy variable. != x_plot
 
         # With data, create save path and title to give the functions
-        save_path = "{}_temperature_comparison.png".format(file_path.split('.')[0])
-        title = 'Temperature Comparison:' \
-                '{}'.format(file_path.split('.')[0].split('/')[-1])
+        save_path = "{}_temperature_comparison_{}.png"\
+                .format(file_path.split('.')[0],
+                station_ASOS)
+        title = '{}: Temperature Comparison:' \
+                '{}'.format(station_ASOS, file_path.split('.')[0].split('/')[-1])
 
         fig = plt.figure()  # This is the 'canvas' of the plot. Used later for changes
 
@@ -229,15 +221,17 @@ elif user_selection == 6:
         plt.savefig(save_path)
         plt.show()
 
-    if ASOS_selection == 2:
-        # Pressure comparison: ASOS is sea level pressure
-
+    def ASOS_press_plot():
+        # Plotting function for pressure
         x_plot, y_plot = pair_ASOS(times_ASOS, ASOS_mslp)
 
         # With data, create save path and title to give the functions
-        save_path = "{}_pressure_comparison.png".format(file_path.split('.')[0])
-        title = 'Pressue Comparison:' \
-                '{}'.format(file_path.split('.')[0].split('/')[-1])
+        save_path = "{}_pressure_comparison_{}.png"\
+                .format(file_path.split('.')[0],
+                station_ASOS)
+        title = '{}: Pressure Comparison:' \
+                '{}'.format(station_ASOS, file_path.split('.')[0].split('/')[-1])
+
 
         fig = plt.figure()  # This is the 'canvas' of the plot. Used later for changes
 
@@ -259,19 +253,59 @@ elif user_selection == 6:
         plt.savefig(save_path)
         plt.show()
 
+    def ASOS_humidity_plot():
+        # Plotting function for humidity
+                x_plot, y_plot = pair_ASOS(times_ASOS, rel_hum_ASOS)
 
-        print(2)
+                # With data, create save path and title to give the functions
+                save_path = "{}_humidity_comparison_{}.png"\
+                        .format(file_path.split('.')[0],
+                        station_ASOS)
+                title = '{}: humidity Comparison:' \
+                        '{}'.format(station_ASOS,
+                                file_path.split('.')[0].split('/')[-1])
 
+                fig = plt.figure()  # This is the 'canvas' of the plot. Used later for changes
+
+                # Actually plotting the data - with labels and everything
+                ax1 = plt.subplot(1, 1, 1)
+                ax1.plot(x_plot, y_plot, label='Official Data')
+                ax1.plot(time, rel_hum, label='Unofficial data')
+
+                # this is what make the x-axis format correctly
+                xfmt = mdate.DateFormatter('%H:%M')
+                ax1.xaxis.set_major_formatter(xfmt)
+                fig.autofmt_xdate()
+
+                plt.title(title)
+                plt.ylabel('Relative Humidity (%)')
+                plt.xlabel('Time (Hour:Minutes)')
+
+                plt.legend()
+                plt.savefig(save_path)
+                plt.show()
+
+
+
+
+
+    if ASOS_selection == 1:
+        # Temperature plotting
+        ASOS_temp_plot()
+
+    if ASOS_selection == 2:
+        # Pressure comparison: ASOS is sea level pressure
+        ASOS_press_plot()
 
 
     if ASOS_selection == 3:
         # Relative Humidity comparison
-        print(3)
+        ASOS_humidity_plot()
 
     if ASOS_selection == 4:
         # All of the above
-        print(4)
 
-"""
-time, temperature, pressure, rel_hum = get_data(file_path, start_time)
-"""
+        ASOS_temp_plot()
+        ASOS_press_plot()
+        ASOS_humidity_plot()
+

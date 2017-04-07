@@ -1,5 +1,12 @@
 # Notes I leave to myself about where I am on programming. 
 
+20170407_2: UPDATING NAMING. Including 'DSM' and 'AMW' in the titles and
+filenames when being saved
+
+20170407_1: Arduino pressure appears to be sea level.... what? How does it know
+height? Arduino sketch updated for 30 second intervals. Starting continuous
+data collection for comparison. Thinking about methods for data analysis
+
 20170406_2: ASOS pressure now is working. Recorded data is way, way off hte sea
             level pressure from the ASOS. Probably an issue with the code...
             Hopefully an issue with the code
