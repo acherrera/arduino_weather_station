@@ -10,28 +10,18 @@ for Arduino. The data is processed in Python language.
 # Project Notes
 
 ## Physical Build issues
-The current designs seems to store a lot of heat in the system, making it much slower to
-respond than the BME280 on its own. Need to create remote sensor to reduce the heat absorbed 
-by the sensor from the rest of the sensing equipments. This is a small error, but will skew 
-the data from expected. "Bathroom_fan_pressure_test" is a good example as the station had 
-be brought inside minutes before the fan pressure test and it had yet to reach steady state. 
-
-Additionally, the heating of the surroundings and radiation into the box are causing significant 
-fluctuations and bizarre behaviour.  
-
-Will attempt to fix this by mounting the sensor on a small standoff above 
-or to the side of the board. Will test before and after for results
+Standoff could be much larger. Due to the short size of the stand off,
+radiation from the ground is still an issue. Attempting to minimize this by
+placing sensor on all objects.
 
 ## Things to do
+Get more data. Days of data to be analyzed. Keep the data coming in.
 
-Working on limiting the scope of the project. Example: do not need to have
-every possible option included to make this work. 
+Eventually should update sensor to record an average of values instead of
+instaneous value. Would make graphs a little better. Can do this on the backend
+but it's a little more messy and tends to clutter the code base
 
-### Make file to plot single varible
 
-This should be easy - make a temperature only graph
-                    - make a pressure only graph
-                    - make a humidity only graph
 
 # Other Interesting Links
 Home made sonic anemometer: https://soldernerd.com/arduino-ultrasonic-anemometer/
