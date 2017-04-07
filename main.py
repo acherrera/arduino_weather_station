@@ -62,23 +62,25 @@ print("Start time is: {}".format(start_time))
 # data given the input file
 time, temperature, pressure, rel_hum = get_data(file_path, start_time)
 
-# Reduce pressure to sea level
+
+# ================ Reduce pressure to sea level =============
 """         P_sl = P*exp((z*g)/(R*T))
             P_sl: sea level pressure
             P: station pressure
             z: height MSL
             g: gravity
             R: 287
-            T: temperature in Kelvin    """
+            T: temperature in Kelvin
+
 for i in range(len(pressure)):
-    pressure_value = pressure[i]
     z_MSL = 288.036     # MSL of KAMW airport in meters
     gravity = 9.81      # force of gravity
     R_gas = 287             # gas constant
     Temp_Kelvin = temperature[i] + 273.15
-    SL_pressure = pressure_value*(np.exp((z_MSL*gravity)/(R_gas*Temp_Kelvin)))
+    SL_pressure = pressure[i]*(np.exp((z_MSL*gravity)/(R_gas*Temp_Kelvin)))
     pressure[i] = SL_pressure # change value at index to sea level pressure
-
+    # TESTING
+"""
 
 
 # ========== Plotting Menu. Get user input for plotting ===============
@@ -193,6 +195,9 @@ elif user_selection == 6:
 
     ASOS_selection = menu_maker(ASOS_menu)
 
+
+    # ================== Main area for ASOS data handling =======================
+
     if ASOS_selection == 1:
 
         # Temperature comparison - NOTE: ASOS data is in F
@@ -226,15 +231,35 @@ elif user_selection == 6:
 
     if ASOS_selection == 2:
         # Pressure comparison: ASOS is sea level pressure
-        """
-        # P_sl = P*exp((z*g)/(R*T))
-            P_sl: sea level pressure
-            P: station pressure
-            z: height MSL
-            g: gravity
-            R: 287
-            T: temperature in Kelvin
-        """
+
+        x_plot, y_plot = pair_ASOS(times_ASOS, ASOS_mslp)
+
+        # With data, create save path and title to give the functions
+        save_path = "{}_pressure_comparison.png".format(file_path.split('.')[0])
+        title = 'Pressue Comparison:' \
+                '{}'.format(file_path.split('.')[0].split('/')[-1])
+
+        fig = plt.figure()  # This is the 'canvas' of the plot. Used later for changes
+
+        # Actually plotting the data - with labels and everything
+        ax1 = plt.subplot(1, 1, 1)
+        ax1.plot(x_plot, y_plot, label='Official Data')
+        ax1.plot(time, pressure, label='unofficial data')
+
+        # this is what make the x-axis format correctly
+        xfmt = mdate.DateFormatter('%H:%M')
+        ax1.xaxis.set_major_formatter(xfmt)
+        fig.autofmt_xdate()
+
+        plt.title(title)
+        plt.ylabel('Pressure (hPa)')
+        plt.xlabel('Time (Hour:Minutes)')
+
+        plt.legend()
+        plt.savefig(save_path)
+        plt.show()
+
+
         print(2)
 
 

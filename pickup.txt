@@ -1,6 +1,10 @@
-# Notes to leave to myself about where I am on programming. 
+# Notes I leave to myself about where I am on programming. 
 
-20170406:   Working on getting the ASOS data to plot sea level pressure.
+20170406_2: ASOS pressure now is working. Recorded data is way, way off hte sea
+            level pressure from the ASOS. Probably an issue with the code...
+            Hopefully an issue with the code
+
+20170406_1: Working on getting the ASOS data to plot sea level pressure.
             Functions.py has been upated, need to integrate into
             ASOS_plotting.py and main.py. Compare to sea level reduced pressure
             data from sensor
