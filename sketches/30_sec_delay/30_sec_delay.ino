@@ -1,4 +1,3 @@
-
 /*
 Combining date logger and BME 280 chip. This should get and log data
 TODO need to get the LED to stop when card is pulled out. 
@@ -19,6 +18,7 @@ TODO need to get the LED to stop when card is pulled out.
 //Change this for accurate altitude readings. Comment out for no alitutde
 #define SEALEVELPRESSURE_HPA (1013.25)
 
+int n = 0;
 int led = 2;
 const int chipSelect = 10; // for datalogger
 RTC_DS1307 rtc; //for time information
@@ -82,46 +82,52 @@ void loop() {
   delay (1000); // keep LED on for one second before turning off
   digitalWrite(led, LOW);
   delay(9000);
+  n+=1;
+
+  //change '3' to other number for more or less time delay. Increments by ten each time
+  if (n>=3){
+
+    n=0;
+    // make a string for assembling the data to log:
+    DateTime now = rtc.now(); //For time Logging
+    String dataString = "";
   
-  // make a string for assembling the data to log:
-  DateTime now = rtc.now(); //For time Logging
-  String dataString = "";
-
-  char dateTimeString[40];
-  sprintf(dateTimeString, "%04d%02d%02d_%02d%02d%02d", now.year(), now.month(), now.day(),
-          now.hour(), now.minute(), now.second());
-
-  dataString += dateTimeString;
-  dataString += ",";
-  dataString += String(bme.readTemperature());
-  dataString += ",";
-  dataString += String(bme.readPressure() / 100.0F);
-  dataString += ",";
-  dataString += String(bme.readHumidity());
-
-
-
-  // open the file. note that only one file can be open at a time,
-  // close this one before opening another.
-  // File dataFile = SD.open("datalog.txt", FILE_WRITE); // This creates the file object
-  // if the file is available, write to it:
-
-  File dataFile = SD.open("Datalog.txt", FILE_WRITE);
-
-  if (dataFile) {
-    dataFile.println(dataString);
-    dataFile.close();
-    Serial.println(dataString); // mainly for testing
-  }
-  // if the file isn't open, pop up an error:
-  // No idea why this part doesn't work correctly.
-  else {
-    for (int i = 0; i < 5; i++) {
-      digitalWrite(led, HIGH);
-      delay(100);
-      digitalWrite(led, LOW);
-      delay(100);
+    char dateTimeString[40];
+    sprintf(dateTimeString, "%04d%02d%02d_%02d%02d%02d", now.year(), now.month(), now.day(),
+            now.hour(), now.minute(), now.second());
+  
+    dataString += dateTimeString;
+    dataString += ",";
+    dataString += String(bme.readTemperature());
+    dataString += ",";
+    dataString += String(bme.readPressure() / 100.0F);
+    dataString += ",";
+    dataString += String(bme.readHumidity());
+  
+  
+  
+    // open the file. note that only one file can be open at a time,
+    // close this one before opening another.
+    // File dataFile = SD.open("datalog.txt", FILE_WRITE); // This creates the file object
+    // if the file is available, write to it:
+  
+    File dataFile = SD.open("Datalog.txt", FILE_WRITE);
+  
+    if (dataFile) {
+      dataFile.println(dataString);
+      dataFile.close();
+      Serial.println(dataString); // mainly for testing
     }
-    Serial.println("error opening file");
+    // if the file isn't open, pop up an error:
+    // No idea why this part doesn't work correctly.
+    else {
+      for (int i = 0; i < 5; i++) {
+        digitalWrite(led, HIGH);
+        delay(100);
+        digitalWrite(led, LOW);
+        delay(100);
+      }
+      Serial.println("error opening file");
+    }
   }
 }
