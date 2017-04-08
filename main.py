@@ -13,12 +13,23 @@ will wait until you tell it when you want it to start. Keep hitting enter to sta
 # Time comes in form %04d%02d%02d_%02d%02d%02d - Because I made it that way.
 # Data is of form: Time, Temperature, Pressure, Relative Humidity.
 
+# Change this to False for day light savings time
+add_hour = True
 
-#===================== Importing Modules============================
+if add_hour:
+    time_correction = 1
+else:
+    time_correction = 0
+
+
+
+#=====================Importing Modules============================
 
 import tkinter as tk
 from tkinter import filedialog
 import numpy as np
+import datetime
+
 
 # custom modules - should be in file.
 from modules.functions import *
@@ -56,6 +67,8 @@ data_begin = data_start(file_path, lines_to_scan) # data_start is cutom function
 # file for more information
 start_time = get_start(data_begin)
 
+start_time = start_time + datetime.timedelta(hours=time_correction)
+
 print("Start time is: {}".format(start_time))
 
 # get_data is in moldules/functions.py file. This is what extracts the
@@ -63,6 +76,10 @@ print("Start time is: {}".format(start_time))
 
 time, temperature, pressure, rel_hum = get_data(file_path, start_time)
 
+# ===============Day Light Saving Time Correction ===================
+
+for i in range(len(time)):
+    time[i] = time[i] + datetime.timedelta(hours=time_correction)
 
 # ========== Plotting Menu. Get user input for plotting ===============
 
@@ -308,4 +325,3 @@ elif user_selection == 6:
         ASOS_temp_plot()
         ASOS_press_plot()
         ASOS_humidity_plot()
-

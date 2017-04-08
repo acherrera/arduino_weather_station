@@ -72,4 +72,3 @@ def single_plot(x, y, title, xlabel, ylabel, save_file):
     plt.show()
 
 
-

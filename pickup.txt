@@ -1,5 +1,9 @@
 # Notes I leave to myself about where I am on programming. 
 
+20170408_1: Changed times in graph. Added one hour for day light savings time
+change. Changed some graphs to reflect this change. Option in code for non-DST
+time. Should switch to UTC
+
 20170407_2: UPDATING NAMING. Including 'DSM' and 'AMW' in the titles and
 filenames when being saved
 
