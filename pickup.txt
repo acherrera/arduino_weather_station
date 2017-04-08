@@ -1,5 +1,8 @@
 # Notes I leave to myself about where I am on programming. 
 
+20170408_2: Created experimental file. Modularized the GUI portion into the
+'menus.py' file.  Should start comparisons soon
+
 20170408_1: Changed times in graph. Added one hour for day light savings time
 change. Changed some graphs to reflect this change. Option in code for non-DST
 time. Should switch to UTC

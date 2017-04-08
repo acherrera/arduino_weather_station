@@ -1,7 +1,6 @@
-"""
-This is the file to output menus that look nice and pretty.
-The output can then be use to make other decisions
-"""
+
+import tkinter as tk
+from tkinter import filedialog
 
 def menu_maker(in_list):
     """
@@ -27,4 +26,17 @@ def menu_maker(in_list):
         except:
             print("Please enter a valid number")
     return user_output
+
+def GUI_file_selector():
+    # File location from user using pretty GUI
+    # returns full file path
+    root = tk.Tk()                      # make it
+    root.withdraw()                     # how to
+    raw_path = filedialog.askopenfile() # what to
+    root.destroy()                      # get rid of
+
+    # This is needed to make the file path work correctly
+    file_path = raw_path.name
+
+    return file_path
 

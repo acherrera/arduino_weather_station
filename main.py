@@ -14,13 +14,6 @@ will wait until you tell it when you want it to start. Keep hitting enter to sta
 # Data is of form: Time, Temperature, Pressure, Relative Humidity.
 
 # Change this to False for day light savings time
-add_hour = True
-
-if add_hour:
-    time_correction = 1
-else:
-    time_correction = 0
-
 
 
 #=====================Importing Modules============================
@@ -39,19 +32,21 @@ from modules.menus import *
 # Use this to change the style of graph
 plt.style.use('seaborn-notebook')
 
+# ======================= DST correction ================
+
+add_hour = True # False for minus one hour (winter)
+
+if add_hour:
+    time_correction = 1
+else:
+    time_correction = 0
+
 
 # =================== All the file handling ==========================
 
-input("Choose .txt to use for data - press any key to continue")
+input("Choose .txt to use for data - press 'enter' to continue")
 
-# File location from user using pretty GUI
-root = tk.Tk()                      # make it
-root.withdraw()                     # how to
-raw_path = filedialog.askopenfile() # what to
-root.destroy()                      # get rid of
-
-# This is needed to make the file path work correctly
-file_path = raw_path.name
+file_path = GUI_file_selector()
 
 # Make sure the filename looks correct
 print("\n")
@@ -65,9 +60,8 @@ data_begin = data_start(file_path, lines_to_scan) # data_start is cutom function
 
 # Imported function that runs through and get information from user. See modules
 # file for more information
+# no DST corrrection because this is data start time. Not plotted
 start_time = get_start(data_begin)
-
-start_time = start_time + datetime.timedelta(hours=time_correction)
 
 print("Start time is: {}".format(start_time))
 
@@ -169,15 +163,9 @@ elif user_selection == 5:
 
 elif user_selection == 6:
     # ASOS handling
-    input("\nNext Screen is the official file input - any key to continue")
+    input("\nNext Screen is the ASOS file input - press 'enter' to continue")
 
-    root = tk.Tk()                      # make it
-    root.withdraw()                     # how to
-    raw_path = filedialog.askopenfile() # what to
-    root.destroy()                      # get rid of
-
-    # This is needed to make the file path work correctly
-    official_file = raw_path.name
+    official_file = GUI_file_selector()
 
     # appended "_ASOS" to data names to avoid potential conflicts
     station_ASOS, times_ASOS, temperature_ASOS, dew_point_ASOS, rel_hum_ASOS, dirct,\
@@ -185,7 +173,7 @@ elif user_selection == 6:
 
     station_ASOS = station_ASOS[0]
 
-    print("\nASOS data loaded\nWhat would you like to compare?")
+    print("\nASOS data loaded!\nWhat would you like to compare?")
 
     # Creating secondary menu for more user input
     ASOS_menu = [("Temperature", 1),

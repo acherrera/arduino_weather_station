@@ -10,6 +10,7 @@ import numpy as np
 
 
 def data_start(fileName, lines_scanned):
+    # Goes through top of file to get the first time of data record
     """
     Get the starting time of the data without loading all the data
     :param fileName: path to file
@@ -33,6 +34,8 @@ def data_start(fileName, lines_scanned):
 
 
 def get_start(data_start_time):
+    # asks the user for a custom start time.
+    # Return start time
     """
     This will ask the user for the time they want the graph the start. If nothing is entered - will assume
     start of data as start of graph. Use to get rid of transient temperature change - for example, when the
@@ -93,13 +96,9 @@ def get_start(data_start_time):
 
 
 def get_data(filepath, start_time):
-    """
-    Function that actually gets the data and returns the lists of data to be plotted later
+    # Function that actually gets the data and returns the lists of data to be plotted later
+    # Returns time_list, temperature_list, pressure_list, rel_hum_list
 
-    :param filepath: String of path to file.
-    :param start_time: Time to start the graph. Use get_start to find this value
-    :return: reutns time, temperature, pressure, relative humidity as large lists
-    """
     with open(filepath) as f:
         data = f.readlines()
 
@@ -144,9 +143,10 @@ def get_data(filepath, start_time):
 
 
 def parse_ASOS(filepath):
-
     # ============== File opening and cleaning ==================
     # Opens file and gets data out of it
+    # Returns station, valid, tempf, dwpf, relh, dirct, mslp
+
     with open(filepath) as f:
         data = f.readlines()
 
@@ -218,10 +218,7 @@ def parse_ASOS(filepath):
 
 
 def pair_ASOS(times_in, variable_in):
-    """
-    Fuction takes the two variables and check to make sure that the variable
-    assosciated with the time is not empty
-    """
+    # Pairs data for ASOS reports. List will not be empty
     plot_times = []
     plot_variable = []
 
