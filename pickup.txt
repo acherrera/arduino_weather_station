@@ -1,5 +1,10 @@
 # Notes I leave to myself about where I am on programming. 
 
+20170410_1: Working on stripping data based on date and time. Using something
+like grep YYYYMMDD * | sort > output_YYYYMMDD.txt. Need to learn scripting to
+actually get this done. Think this will be the best method to do it vs trying
+to use a Python program
+
 20170408_2: Created experimental file. Modularized the GUI portion into the
 'menus.py' file.  Should start comparisons soon
 

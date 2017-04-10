@@ -76,7 +76,6 @@ def get_start(data_start_time):
     else:
         custom_start = False
 
-
     if custom_start == True:
         # Get the start time information use get_data defined above
         year_start = get_data("Year", year_data_start)
