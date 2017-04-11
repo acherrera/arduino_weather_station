@@ -4,6 +4,8 @@ Created by Anthony Herrera to analyze Arduino weather station data.
 WHEN RUN: will need to hit enter in the command prompt area and/or set the desired starting time. Program
 will wait until you tell it when you want it to start. Keep hitting enter to start at start time of data.
 
+Note: This is only for one day worth of data.
+
 """
 
 # TODO add temperature conversion availability. Need to update graph axis labels
@@ -13,7 +15,6 @@ will wait until you tell it when you want it to start. Keep hitting enter to sta
 # Time comes in form %04d%02d%02d_%02d%02d%02d - Because I made it that way.
 # Data is of form: Time, Temperature, Pressure, Relative Humidity.
 
-# Change this to False for day light savings time
 
 
 #=====================Importing Modules============================

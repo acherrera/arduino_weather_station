@@ -1,116 +1,96 @@
-"""
-This file is just for testing functions and seeing what works -
-"""
-import datetime
 
 import matplotlib.dates as mdate
+import datetime
 import matplotlib.pyplot as plt
 
-from modules.functions import get_start, get_data, data_start
+# File path does not chagne for now
+file_path = '/home/tony/Centered/weather_station/test_data/20170409_Meso.txt'
 
-filePath = 'datasets/weather_data/20170226_official_data.py'
-lines_scanned = 40
 
-with open(filePath) as f:
-    # Gets top 20 lines to look for first non-comment line
+with open(file_path) as f:
     data = f.readlines()
 
-newtop = []
-for line in data:
-    # Take out tops line if they are not a comment or blank
-    if line.startswith('#') or line == '\n':
-        pass
-    else:
-        newtop.append(line)
 
-header = newtop.pop(0)
+""" Data of form: 
+April 09 2017 00:00  64.1 64.1 64.1 73 2 144 6 12:00AM 29.571 0.00 0.29 0.29
+74.0 44 0 0.0
 
-station = []
-time = []
-temperature = []
-dew_point = []
-rel_hum = []
-dirct = []
+Note: NOT CSV. use list.split(' ')
 
-Year = []
-Month = []
-Day = []
-Hour = []
-Minute = []
+Now, what does it all mean?
+Month, DD, YYYY, HH:MM, Temp1, Temp2, Temp3, Temp_inside, radiation?, Wind_dir,
+no idea about the rest... plot it!
+"""
 
 times = []
+data1 = []
+data2 = []
+data3 = []
 
+# =================== Stripping Data ====================
+for line in data:
+    line = line.split(' ')
 
-def data_adder(item, parent_list):
-    if item == 'M':
-        parent_list.append(None)
-    else:
-        parent_list.append(item)
+    # Time data ===========================
+    valid = line[0:4]
+    valid = '-'.join(valid)
+    # April-09-2017-23:55
+    valid = datetime.datetime.strptime(valid, "%B-%d-%Y-%H:%M")
+    times.append(valid)
 
+    # Stripping and figureing out data1-3
+    first_var = line[5]
+    second_var = line[6]
+    third_var = line[7]
 
-for line in newtop:
-    sample = line.split(',')  # Turns into list
+    data1.append(first_var)
+    data2.append(second_var)
+    data3.append(third_var)
 
-    data_adder(sample[0], station)
-    time = sample[1]  # this is indexing odd.
-    print(time)
-    data_adder(sample[2], temperature)
-    data_adder(sample[3], dew_point)
-    data_adder(sample[4], rel_hum)
-    data_adder(sample[5], dirct)
+def pair_data(time_in, var_in):
+    x = []
+    y = []
+    for i in range(len(time_in)):
+        try:
+            variable_i = float(var_in[i])
+            print(variable_i)
+            time_i = time_in[i]
+            x.append(time_i)
+            y.append(variable_i)
 
-    YMD = time.split(' ')[0].split('-')
-    HM = time.split(' ')[1].split(':')
-    Year = (int(YMD[0]))
-    Month = (int(YMD[1]))
-    Day = (int(YMD[2]))
-    Hour = (int(HM[0]))
-    Minute = (int(HM[1]))
+        except:
+            pass
 
-    times.append(datetime.datetime(Year, Month, Day, Hour, Minute, 0))
+    return x, y
 
-plot_times = []
-plot_variable = []
+# This seems to be working now
+x1, y1 = pair_data(times, data1)
 
-for i in range(len(temperature)):
-    if temperature[i] is not None:
-        plot_variable.append((float(temperature[i]) - 32) / 1.8)
-        plot_times.append(times[i])
+for i in range(len(x1)):
+    print("{} ---- {}".format(x1[1], y1[i]))
 
-the_file = 'datasets/weather_data/20170226_000000_morning_weather.TXT'
+# ===================== Plotting ========================
 
-lines_to_scan = 40  # lines to scan for the first non-comment line
+"""
+title = 'testing'
+xlabel = 'time'
+ylabel = 'testing'
 
-data_start = data_start(the_file, lines_to_scan)
-
-start_time = get_start(data_start)
-
-print("Start time is: {}".format(start_time))
-
-time, temperature, pressure, rel_hum = get_data(the_file, start_time)
-
-if len(time) < 3:
-    print("Please check starting times\nProgram Exiting")
-    quit()
-
-# With data, create save path and title to give the functions
-save_path = "{}.png".format(the_file.split('.')[0])
-title = 'Sensor Data: {}'.format(the_file.split('.')[0].split('/')[2])
-
-fig = plt.figure()  # This is the 'canvas' of the plot. Used later for changes
-
+fig = plt.figure()
 ax1 = plt.subplot(1, 1, 1)
-ax1.plot(plot_times, plot_variable, label='Official Data')
-ax1.plot(time, temperature, label='unofficial data')
 
-# this is what make the x-axis format correctly
+x1, y1 = pair_data(times, data)
+print(x1, y1)
+
+ax1.plot(x1, y1)
+plt.title(title)
+plt.xlabel(xlabel)
+plt.ylabel(ylabel)
+
 xfmt = mdate.DateFormatter('%H:%M')
 ax1.xaxis.set_major_formatter(xfmt)
 fig.autofmt_xdate()
 
-plt.title('Homemade vs Official Data Comparison')
-plt.ylabel('Temperature')
-plt.xlabel('Time (Hour:Minutes)')
-
-plt.legend()
 plt.show()
+
+"""

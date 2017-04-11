@@ -1,23 +1,29 @@
-# Notes I leave to myself about where I am on programming. 
+# Notes I leave to myself about where I am on programming and work
+
+20170411_2: Working on getting the AMS data to play nicely with everything else
+
+20170411_1: Reworked the method of data collection and analysis. All data is
+            dumped into master file and then stripped out base on day. This solves the
+            problem of partial data due to taking data file in the middle of the day.
 
 20170410_1: Working on stripping data based on date and time. Using something
-like grep YYYYMMDD * | sort > output_YYYYMMDD.txt. Need to learn scripting to
-actually get this done. Think this will be the best method to do it vs trying
-to use a Python program
+            like grep YYYYMMDD * | sort > output_YYYYMMDD.txt. Need to learn scripting to
+            actually get this done. Think this will be the best method to do it vs trying
+            to use a Python program
 
 20170408_2: Created experimental file. Modularized the GUI portion into the
-'menus.py' file.  Should start comparisons soon
+            'menus.py' file.  Should start comparisons soon
 
 20170408_1: Changed times in graph. Added one hour for day light savings time
-change. Changed some graphs to reflect this change. Option in code for non-DST
-time. Should switch to UTC
+            change. Changed some graphs to reflect this change. Option in code for non-DST
+            time. Should switch to UTC
 
 20170407_2: UPDATING NAMING. Including 'DSM' and 'AMW' in the titles and
-filenames when being saved
+            filenames when being saved
 
 20170407_1: Arduino pressure appears to be sea level.... what? How does it know
-height? Arduino sketch updated for 30 second intervals. Starting continuous
-data collection for comparison. Thinking about methods for data analysis
+            height? Arduino sketch updated for 30 second intervals. Starting continuous
+            data collection for comparison. Thinking about methods for data analysis
 
 20170406_2: ASOS pressure now is working. Recorded data is way, way off hte sea
             level pressure from the ASOS. Probably an issue with the code...
