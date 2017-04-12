@@ -47,13 +47,18 @@ for line in data:
     data2.append(second_var)
     data3.append(third_var)
 
+
+
+# This is not working properly. Returns lots of bad values see graph for
+# details
+
 def pair_data(time_in, var_in):
+    # Gets rid of data that is missing so data can be plotted
     x = []
     y = []
     for i in range(len(time_in)):
         try:
             variable_i = float(var_in[i])
-            print(variable_i)
             time_i = time_in[i]
             x.append(time_i)
             y.append(variable_i)
@@ -63,15 +68,11 @@ def pair_data(time_in, var_in):
 
     return x, y
 
-# This seems to be working now
-x1, y1 = pair_data(times, data1)
 
-for i in range(len(x1)):
-    print("{} ---- {}".format(x1[1], y1[i]))
+
 
 # ===================== Plotting ========================
 
-"""
 title = 'testing'
 xlabel = 'time'
 ylabel = 'testing'
@@ -79,10 +80,12 @@ ylabel = 'testing'
 fig = plt.figure()
 ax1 = plt.subplot(1, 1, 1)
 
-x1, y1 = pair_data(times, data)
-print(x1, y1)
+x1, y1 = pair_data(times,data1)
+x2, y2 = pair_data(times,data2)
+x3, y3 = pair_data(times,data3)
 
-ax1.plot(x1, y1)
+
+ax1.plot(x1, y1, x2, y2, x3, y3)
 plt.title(title)
 plt.xlabel(xlabel)
 plt.ylabel(ylabel)
@@ -92,5 +95,3 @@ ax1.xaxis.set_major_formatter(xfmt)
 fig.autofmt_xdate()
 
 plt.show()
-
-"""
