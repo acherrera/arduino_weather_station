@@ -17,6 +17,7 @@ RTC_DS1307 rtc;
 
 int led = 5;
 int n;  //Used for counting with the LED later
+int p;
 const int chipSelect = 10;
 
 void setup(void)
@@ -69,79 +70,87 @@ void loop(void)
   // LED and delay handling ================================
 
   // To get different delay lengths, have to work this a little bit. 
-  n+=1; // counts how many times the loop has gone through
-  if (n>=10){  // after ten loops - ten seconds - blink LED
-    n=0;
+  n+=1; // counts how many seconds since last write
+  p+=1; // counts how many seconds since last blink
+  
+  if (p>=10){  // after ten loops - ten seconds - blink LED
+    p=0;
     digitalWrite(led,HIGH);
   }
+
+  // This causes the one second loop delay
   delay(1000);
   digitalWrite(led,LOW);
 
+  // for testing
+  Serial.print(n);
+  Serial.print(" : ");
+  Serial.println(p);
 
-  Serial.println(n);
-
-  
-  // Get pressure data =====================================
-  /* Get a new sensor event */ 
-  sensors_event_t event;
-  bmp.getEvent(&event);
- 
-  /* Display the results (barometric pressure is measure in hPa) */
-  if (!event.pressure)
-  {
-    Serial.println("Sensor error");
-  }
-  
-  /* Get a new sensor event */ 
-  bmp.getEvent(&event);
- 
-
-  /* Display atmospheric pressue in hPa */
-  float pressure = event.pressure;
-
-  /* First we get the current temperature from the BMP085 */
-  float temperature;
-  bmp.getTemperature(&temperature);
-  
-  String dataString;
-  
-  DateTime now = rtc.now(); //For time Logging
-  
-  char dateTimeString[40];
-  sprintf(dateTimeString, "%04d%02d%02d_%02d%02d%02d", now.year(), now.month(), now.day(),
-          now.hour(), now.minute(), now.second());
-          
-
-  dataString += dateTimeString;
-  dataString += ",";
-  dataString += String(temperature);
-  dataString += ",";
-  dataString += String(pressure);
-  dataString += ",";
-  dataString += "M"; // relative humidity is missing. Doing it like ASOS
-  
-  
-  Serial.println(dataString);
- 
-  
-  // Writeto SD card ===================================
-
-  // open the file. note that only one file can be open at a time,
-  // so you have to close this one before opening another.
-  File dataFile = SD.open("datalog.txt", FILE_WRITE);
-
-  // if the file is available, write to it:
-  if (dataFile) {
-    dataFile.println(dataString);
-    dataFile.close();
-    // print to the serial port too:
-    Serial.println(dataString);
-  }
+  //after 30 loops - 30 seconds - run the main portion
+  if (n>=30) {
+    n=0;
+    // Get pressure data =====================================
+    /* Get a new sensor event */ 
+    sensors_event_t event;
+    bmp.getEvent(&event);
+   
+    /* Display the results (barometric pressure is measure in hPa) */
+    if (!event.pressure)
+    {
+      Serial.println("Sensor error");
+    }
     
-  // if the file isn't open, pop up an error:
-  else {
-    Serial.println("error opening datalog.txt");
+    /* Get a new sensor event */ 
+    bmp.getEvent(&event);
+   
+  
+    /* Display atmospheric pressue in hPa */
+    float pressure = event.pressure;
+  
+    /* First we get the current temperature from the BMP085 */
+    float temperature;
+    bmp.getTemperature(&temperature);
     
+    String dataString;
+    
+    DateTime now = rtc.now(); //For time Logging
+    
+    char dateTimeString[40];
+    sprintf(dateTimeString, "%04d%02d%02d_%02d%02d%02d", now.year(), now.month(), now.day(),
+            now.hour(), now.minute(), now.second());
+            
+  
+    dataString += dateTimeString;
+    dataString += ",";
+    dataString += String(temperature);
+    dataString += ",";
+    dataString += String(pressure);
+    dataString += ",";
+    dataString += "M"; // relative humidity is missing. Doing it like ASOS
+    
+    
+    Serial.println(dataString); // for testing
+   
+    
+    // Writeto SD card ===================================
+  
+    // open the file. note that only one file can be open at a time,
+    // so you have to close this one before opening another.
+    File dataFile = SD.open("datalog.txt", FILE_WRITE);
+  
+    // if the file is available, write to it:
+    if (dataFile) {
+      dataFile.println(dataString);
+      dataFile.close();
+      // print to the serial port too:
+    }
+      
+    // if the file isn't open, pop up an error:
+    else {
+      Serial.println("error opening datalog.txt");
+      
+    } 
   } 
 }
 
