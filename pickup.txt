@@ -1,5 +1,12 @@
 # Notes I leave to myself about where I am on programming and work
 
+20170413_1: WEATHER STATION 2 is functional! Ugly, but functional. Small change
+            to functions.py to allow handling of the missing relative humidity
+            data - stored as "M" just like ASOS. Will start collecting data
+            with it soon. Pressure is absolute, not reduced, so will need
+            reduction. Will also need some new menu options so the program
+            isn't dumb with the mising humidity data. 
+
 20170411_2: Working on getting the AMS data to play nicely with everything else
 
 20170411_1: Reworked the method of data collection and analysis. All data is

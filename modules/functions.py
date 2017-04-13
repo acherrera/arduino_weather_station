@@ -136,7 +136,13 @@ def get_data(filepath, start_time):
                 input_pressure = float(line.split(',')[2])
                 corrected_pressure = input_pressure * np.exp((elevation * gravity) / (R * to_kelvin(temperature)))
                 pressure_list.append(corrected_pressure)
-                rel_hum_list.append(float(line.split(',')[3]))
+                # Handling for the BMP180 sensor - does not have humidity,
+                # instead has 'M' values returned
+                try:
+                    rel_hum_list.append(float(line.split(',')[3]))
+                except:     # Yes, I know it's lazy, but it works
+                    pass
+
 
     return time_list, temperature_list, pressure_list, rel_hum_list
 
