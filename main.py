@@ -84,7 +84,8 @@ plot_options = [("Temperature", 1),
                 ("Relative Humidity", 3),
                 ("Plot all", 4),
                 ("Plot and save all of the above", 5),
-                ("ASOS Comparison", 6)]
+                ("ASOS Comparison", 6),
+                ("Meso Comparison",7)]
 
 user_selection = menu_maker(plot_options)
 
@@ -160,6 +161,9 @@ elif user_selection == 5:
                 ylabel3='RH (%)',
                 save_file=save_path)
 
+
+
+
 # ====================== ASOS Comparison Handling ============================
 
 elif user_selection == 6:
@@ -197,7 +201,8 @@ elif user_selection == 6:
     """
     def ASOS_temp_plot():
         # Temperature comparison - NOTE: ASOS data is in F
-        x_plot, y_plot = pair_ASOS(times_ASOS, temperature_ASOS)
+
+        x_plot, y_plot = pair_data(times_ASOS, temperature_ASOS)
         y_plot = [((x-32)/1.8) for x in y_plot] #x is dummy variable. != x_plot
 
         # With data, create save path and title to give the functions
@@ -228,8 +233,8 @@ elif user_selection == 6:
         plt.show()
 
     def ASOS_press_plot():
-        # Plotting function for pressure
-        x_plot, y_plot = pair_ASOS(times_ASOS, ASOS_mslp)
+        # Plotting function for pressure comparison
+        x_plot, y_plot = pair_data(times_ASOS, ASOS_mslp)
 
         # With data, create save path and title to give the functions
         save_path = "{}_pressure_comparison_{}.png"\
@@ -260,8 +265,8 @@ elif user_selection == 6:
         plt.show()
 
     def ASOS_humidity_plot():
-        # Plotting function for humidity
-                x_plot, y_plot = pair_ASOS(times_ASOS, rel_hum_ASOS)
+        # Plotting function for humidity comparison
+                x_plot, y_plot = pair_data(times_ASOS, rel_hum_ASOS)
 
                 # With data, create save path and title to give the functions
                 save_path = "{}_humidity_comparison_{}.png"\
@@ -291,10 +296,6 @@ elif user_selection == 6:
                 plt.savefig(save_path)
                 plt.show()
 
-
-
-
-
     if ASOS_selection == 1:
         # Temperature plotting
         ASOS_temp_plot()
@@ -310,7 +311,36 @@ elif user_selection == 6:
 
     if ASOS_selection == 4:
         # All of the above
-
         ASOS_temp_plot()
         ASOS_press_plot()
         ASOS_humidity_plot()
+
+
+
+# ========================= Meso data handling ================================
+
+elif user_selection ==7:
+    print("We're working on the meso handling")
+
+    # Meso  handling
+    input("\nNext Screen is the Mesonet file input - press 'enter' to continue")
+
+    meso_file  = GUI_file_selector()
+
+    # This big lines records all the data from the mesonet sensor
+    times, temp1, temp2, temp3, data4, wind_spd, wind_dir, data7, time2, \
+    pressure, data10, data11, data12, data13, data14, \
+    solar_rad, uv_index  = extract_meso(meso_file)
+
+    # Defining the selection menu 
+    # More options: winds speed, direction, UV, inside temperature
+    Meso_menu = [("Temperature", 1),
+                 ("Pressure",2),
+                 ("Relative Humidity",3),
+                 ("Plot and save all of the above", 4)]
+
+
+
+
+    # Working to this point. Add sub options likes above
+

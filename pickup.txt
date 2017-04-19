@@ -1,5 +1,15 @@
 # Notes I leave to myself about where I am on programming and work
 
+20170414_1: Incorporating mesonet data into the program
+
+20170413_2: Oh man.... Weather station 2 has time after Day Light Savings time,
+            station 1 is time before DST. So, the same code won't nessacarily
+            work with both station data. May need to look and ceck for the last
+            data point. If line[3] == 'M': then run a code to convert the time.
+            But, if it is BME280, this won't be there to check which station is
+            being worked on. Maybe have a CSV item that tell which station it
+            is. Alternatively, use UCT instead of local.
+
 20170413_1: WEATHER STATION 2 is functional! Ugly, but functional. Small change
             to functions.py to allow handling of the missing relative humidity
             data - stored as "M" just like ASOS. Will start collecting data

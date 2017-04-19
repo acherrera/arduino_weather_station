@@ -222,19 +222,90 @@ def parse_ASOS(filepath):
     return station, valid, tempf, dwpf, relh, dirct, mslp
 
 
-def pair_ASOS(times_in, variable_in):
-    # Pairs data for ASOS reports. List will not be empty
-    plot_times = []
-    plot_variable = []
+def pair_data(time_in, var_in):
+  # Gets rid of data that is missing so data can be plotted
+  # Filters out anything that can't be converted to float.
+    x = []
+    y = []
+    for i in range(len(time_in)):
+        try:
+            current_var = float(var_in[i])
+            current_time = time_in[i]
+            x.append(current_time)
+            y.append(current_var)
 
-    # runs through the list by index rather than actual value so when it
-    # comes back with a value, both the valua and associated time can be added to the list
+        except:
+            pass
 
-    for i in range(len(variable_in)):
-        if variable_in[i] is not None:
-            plot_variable.append(float(variable_in[i]))
-            plot_times.append(times_in[i])
+    return x, y
 
-    return plot_times, plot_variable
 
+
+def extract_meso(file_path):
+    with open(file_path) as f:
+        data = f.readlines()
+
+
+    """ Data of form:
+    April 09 2017 00:00  64.1 64.1 64.1 73 2 144 6 12:00AM 29.571 0.00 0.29 0.29
+    74.0 44 0 0.0
+
+    Note: NOT CSV. use list.split(' ')
+
+    Now, what does it all mean?
+    Month, DD, YYYY, HH:MM, Temp1, Temp2, Temp3, Temp_inside, radiation?, Wind_dir,
+    no idea about the rest... plot it!
+
+    Temp2, Temp3 have lots of the same values being returned - bad temps
+    """
+
+    times = []
+    temp1 = []
+    temp2 = []      # Long periods of const. value
+    temp3 = []      # Long periods of const. value
+    data4 = []      # Possible Temperature - between 60 and 80 fluctuations
+    wind_spd = []   # Wind Speed
+    wind_dir = []   # Wind direction
+    data7 = []      # Limited data 8-24 throughout the day increase
+    time2 = []      # does not plot
+    pressure = []   # Pressure
+    data10 = []     # possibly rainfall - all zeros on 04/09
+    data11 = []     # 0.290 all day. No idea
+    data12 = []     # 0.290 all day. No idea again
+    data13 = []     # indoor temperature possibly
+    data14 = []     # Indoor relative humidity
+    solar_rad = []  # Solar radiation
+    uv_index = []     # UV index
+
+    # =================== Stripping Data ====================
+    for line in data:
+        line = line.split(' ')
+
+        # Time data ===========================
+        valid = line[0:4]           # Take time parts out
+        valid = '-'.join(valid)     # Put back together 
+        # April-09-2017-23:55
+        valid = datetime.datetime.strptime(valid, "%B-%d-%Y-%H:%M") # Make object
+        times.append(valid)
+
+        # Stripping out temperature lines
+        temp1.append(line[5])
+        temp2.append(line[6])
+        temp3.append(line[7])
+        data4.append(line[8])
+        wind_spd.append(line[9])
+        wind_dir.append(line[10])
+        data7.append(line[11])
+        time2.append(line[12])
+        pressure.append(line[13])
+        data10.append(line[14])
+        data11.append(line[15])
+        data12.append(line[16])
+        data13.append(line[17])
+        data14.append(line[18])
+        solar_rad.append(line[19])
+        uv_index.append(line[20])
+
+    return times, temp1, temp2, temp3, data4, wind_spd, wind_dir, data7, time2,\
+    pressure, data10, data11, data12, data13, data14, solar_rad, uv_index
 
