@@ -320,7 +320,6 @@ elif user_selection == 6:
 # ========================= Meso data handling ================================
 
 elif user_selection ==7:
-    print("We're working on the meso handling")
 
     # Meso  handling
     input("\nNext Screen is the Mesonet file input - press 'enter' to continue")
@@ -328,9 +327,110 @@ elif user_selection ==7:
     meso_file  = GUI_file_selector()
 
     # This big lines records all the data from the mesonet sensor
-    times, temp1, temp2, temp3, data4, wind_spd, wind_dir, data7, time2, \
-    pressure, data10, data11, data12, data13, data14, \
-    solar_rad, uv_index  = extract_meso(meso_file)
+    times_meso, temp1_meso, temp2_meso, temp3_meso, rel_hum_meso, \
+    wind_spd_meso, wind_dir_meso, data7_meso, time2_meso, \
+    pressure_meso, data10_meso, data11_meso, data12_meso, \
+    data13_meso, data14_meso, solar_rad_meso, uv_index_meso  = extract_meso(meso_file)
+
+    print("Meso Data Loaded Correctly!")
+
+
+    def Meso_temp_plot():
+        # Temperature comparison - NOTE: ASOS data is in F
+        x_plot, y_plot = pair_data(times_meso, temp1_meso)
+        y_plot = [((x-32)/1.8) for x in y_plot] #x is dummy variable. != x_plot
+        # With data, create save path and title to give the functions
+        save_path = "{}_temperature_comparison_Meso.png"\
+                .format(file_path.split('.')[0])
+        title = 'Meso: Temperature Comparison:' \
+                '{}'.format(file_path.split('.')[0].split('/')[-1])
+
+        fig = plt.figure()  # This is the 'canvas' of the plot. Used later for changes
+
+        # Actually plotting the data - with labels and everything
+        ax1 = plt.subplot(1, 1, 1)
+        ax1.plot(x_plot, y_plot, label='Mesonet Data')
+        ax1.plot(time, temperature, label='unofficial data')
+
+        # this is what make the x-axis format correctly
+        xfmt = mdate.DateFormatter('%H:%M')
+        ax1.xaxis.set_major_formatter(xfmt)
+        fig.autofmt_xdate()
+
+        plt.title(title)
+        plt.ylabel('Temperature(C)')
+        plt.xlabel('Time (Hour:Minutes)')
+
+        plt.legend()
+        plt.savefig(save_path)
+        plt.show()
+
+    def Meso_press_plot():
+        # Plotting function for pressure comparison
+        x_plot, y_plot = pair_data(times_meso, pressure_meso)
+
+        # Convert InHg to HPa
+        y_plot = [i*33.8639 for i in y_plot]
+
+
+        # With data, create save path and title to give the functions
+        save_path = "{}_pressure_comparison_Meso.png"\
+                .format(file_path.split('.')[0])
+        title = 'Meso: Pressure Comparison:' \
+                '{}'.format(file_path.split('.')[0].split('/')[-1])
+
+        fig = plt.figure()  # This is the 'canvas' of the plot. Used later for changes
+
+        # Actually plotting the data - with labels and everything
+        ax1 = plt.subplot(1, 1, 1)
+        ax1.plot(x_plot, y_plot, label='Official Data')
+        ax1.plot(time, pressure, label='unofficial data')
+
+        # this is what make the x-axis format correctly
+        xfmt = mdate.DateFormatter('%H:%M')
+        ax1.xaxis.set_major_formatter(xfmt)
+        fig.autofmt_xdate()
+
+        plt.title(title)
+        plt.ylabel('Pressure (hPa)')
+        plt.xlabel('Time (Hour:Minutes)')
+
+        plt.legend()
+        plt.savefig(save_path)
+        plt.show()
+
+    def Meso_humidity_plot():
+        # Plotting function for humidity comparison
+                x_plot, y_plot = pair_data(times_meso, rel_hum_meso)
+
+                # Save path and title
+                save_path = "{}_rel_hum_comparison_Meso.png"\
+                        .format(file_path.split('.')[0])
+                title = 'Meso: Humidity Comparison:' \
+                        '{}'.format(file_path.split('.')[0].split('/')[-1])
+
+
+                fig = plt.figure()  # This is the 'canvas' of the plot. Used later for changes
+
+                # Actually plotting the data - with labels and everything
+                ax1 = plt.subplot(1, 1, 1)
+                ax1.plot(x_plot, y_plot, label='Official Data')
+                ax1.plot(time, rel_hum, label='Unofficial data')
+
+                # this is what make the x-axis format correctly
+                xfmt = mdate.DateFormatter('%H:%M')
+                ax1.xaxis.set_major_formatter(xfmt)
+                fig.autofmt_xdate()
+
+                plt.title(title)
+                plt.ylabel('Relative Humidity (%)')
+                plt.xlabel('Time (Hour:Minutes)')
+
+                plt.legend()
+                plt.savefig(save_path)
+                plt.show()
+
+
 
     # Defining the selection menu 
     # More options: winds speed, direction, UV, inside temperature
@@ -341,6 +441,18 @@ elif user_selection ==7:
 
 
 
+    Meso_selection = menu_maker(Meso_menu)
 
-    # Working to this point. Add sub options likes above
+    if Meso_selection == 1:
+        Meso_temp_plot()
 
+    if Meso_selection == 2:
+        Meso_press_plot()
+
+    if Meso_selection == 3:
+        Meso_humidity_plot()
+
+    if Meso_selection == 4:
+        Meso_temp_plot()
+        Meso_press_plot()
+        Meso_humidity_plot()

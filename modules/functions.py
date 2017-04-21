@@ -279,32 +279,38 @@ def extract_meso(file_path):
 
     # =================== Stripping Data ====================
     for line in data:
-        line = line.split(' ')
 
-        # Time data ===========================
-        valid = line[0:4]           # Take time parts out
-        valid = '-'.join(valid)     # Put back together 
-        # April-09-2017-23:55
-        valid = datetime.datetime.strptime(valid, "%B-%d-%Y-%H:%M") # Make object
-        times.append(valid)
+    #Lazy error handling, but should work well enough. 
+        try:
+            line = line.split(' ')
 
-        # Stripping out temperature lines
-        temp1.append(line[5])
-        temp2.append(line[6])
-        temp3.append(line[7])
-        data4.append(line[8])
-        wind_spd.append(line[9])
-        wind_dir.append(line[10])
-        data7.append(line[11])
-        time2.append(line[12])
-        pressure.append(line[13])
-        data10.append(line[14])
-        data11.append(line[15])
-        data12.append(line[16])
-        data13.append(line[17])
-        data14.append(line[18])
-        solar_rad.append(line[19])
-        uv_index.append(line[20])
+            # Time data ===========================
+            valid = line[0:4]           # Take time parts out
+            valid = '-'.join(valid)     # Put back together 
+            # April-09-2017-23:55
+            valid = datetime.datetime.strptime(valid, "%B-%d-%Y-%H:%M") # Make object
+            times.append(valid)
+
+            # Stripping out temperature lines
+            temp1.append(line[5])
+            temp2.append(line[6])
+            temp3.append(line[7])
+            data4.append(line[8])
+            wind_spd.append(line[9])
+            wind_dir.append(line[10])
+            data7.append(line[11])
+            time2.append(line[12])
+            pressure.append(line[13])
+            data10.append(line[14])
+            data11.append(line[15])
+            data12.append(line[16])
+            data13.append(line[17])
+            data14.append(line[18])
+            solar_rad.append(line[19])
+            uv_index.append(line[20])
+
+        except:
+            pass
 
     return times, temp1, temp2, temp3, data4, wind_spd, wind_dir, data7, time2,\
     pressure, data10, data11, data12, data13, data14, solar_rad, uv_index
