@@ -1,5 +1,8 @@
 # Notes I leave to myself about where I am on programming and work
 
+20170421_1: Mesonet data comparison is now in the program. May add three way
+            comparison to the program. Not worrying about station 2 for a bit
+
 20170414_1: Incorporating mesonet data into the program
 
 20170413_2: Oh man.... Weather station 2 has time after Day Light Savings time,

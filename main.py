@@ -269,7 +269,7 @@ elif user_selection == 6:
                 x_plot, y_plot = pair_data(times_ASOS, rel_hum_ASOS)
 
                 # With data, create save path and title to give the functions
-                save_path = "{}_humidity_comparison_{}.png"\
+                save_path = "{}_rel_hum_comparison_{}.png"\
                         .format(file_path.split('.')[0],
                         station_ASOS)
                 title = '{}: humidity Comparison:' \
